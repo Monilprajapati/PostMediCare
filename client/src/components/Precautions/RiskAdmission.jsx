@@ -127,20 +127,20 @@ export default function RiskAdmission() {
     }
 
     const handleRiskResponse = async () => {
-        // const result = await checkRisk(medicalDetails);
-        // setRiskResponse(result);
+        const result = await checkRisk(medicalDetails);
+        setRiskResponse(result);
 
-        try {
-            const response = await fetch('https://post-medi-care-m5td.vercel.app/predict', {
-                method: 'POST',
-                body: JSON.stringify(medicalDetails)
-            })
-            const data = await response.json();
-            // setRiskResponse(data);
-            console.log(data);
-        } catch (error) {
-            console.log(error);
-        }
+        // try {
+        //     const response = await fetch('https://post-medi-care-m5td.vercel.app/predict', {
+        //         method: 'POST',
+        //         body: JSON.stringify(medicalDetails)
+        //     })
+        //     const data = await response.json();
+        //     // setRiskResponse(data);
+        //     console.log(data);
+        // } catch (error) {
+        //     console.log(error);
+        // }
     }
 
 
