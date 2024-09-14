@@ -21,64 +21,32 @@ A1Cresult_dict = {"Norm": 1, ">7": 2, ">8": 2.5}
 diabetesMed_dict = {'No':0, 'Yes':1}
 medicines_dict = {'No':1, 'Up':3, 'Steady':2, 'Down':0}
 
-@app.route('/', methods=['GET', 'POST'])
+@app.route('/predict', methods=['POST'])
 def index():
     if request.method == 'POST':
+        data = request.json()
         # Collect form data
-        data = [
-            age_dict[request.form['age']],
-            race_dict[request.form['race']],
-            admission_source_id_dict[request.form['admission_source_id']],
-            admission_type_id_dict[request.form['admission_type_id']],
-            discharge_disposition_id_dict[request.form['discharge_disposition_id']],
-            int(request.form['num_lab_procedures']),
-            int(request.form['num_medications']),
-            change_dict[request.form['change']],
-            int(request.form['number_diagnoses']),
-            int(request.form['num_procedures']),
-            int(request.form['number_outpatient']),
-            int(request.form['number_inpatient']),
-            int(request.form['number_emergency']),
-            int(request.form['time_in_hospital']),
-            icd9_codes_dict[request.form['diag_1']],
-            icd9_codes_dict[request.form['diag_2']],
-            icd9_codes_dict[request.form['diag_3']],
-            max_glu_serum_dict[request.form['max_glu_serum']],
-            A1Cresult_dict[request.form['A1Cresult']],
-            diabetesMed_dict[request.form['diabetesMed']],
-            medicines_dict[request.form['metformin']],
-            medicines_dict[request.form['insulin']],
-            medicines_dict[request.form['glipizide']],
-            medicines_dict[request.form['glyburide']],
-            medicines_dict[request.form['pioglitazone']]
+        required_fields = ['age', 
+        'race', 'admission_source_id', 'admission_type_id', 'discharge_disposition_id', 'num_lab_procedures', 'num_medications', 'change', 'number_diagnoses', 'num_procedures', 'number_outpatient', 'number_inpatient', 'number_emergency', 'time_in_hospital', 'diag_1', 'diag_2', 'diag_3', 'max_glu_serum', 'A1Cresult', 'diabetesMed', 'metformin', 'insulin', 'glipizide', 'glyburide', 'pioglitazone'
         ]
 
-        data = np.array(data).reshape(1, 25)
+    if not all(field in data for field in required_fields):
+        return jsonify({"error": "Please provide all required fields."}), 400
 
+    try:
+        data = np.array(data).reshape(1, 25)
         obj = PredictionPipeline()
         predicted_value = obj.predict(data)
 
         result = "There is a chance that the patient will be readmitted within 30 days!" if predicted_value == 1 else "The patient is safe to discharge"
 
-        return redirect(url_for('result', prediction=result))
+        return jsonify({
+            "status": "success",
+            "predicted_value": predicted_value,
+            "result": result 
+        }), 200
 
-    return render_template('form.html', 
-                           age_dict=age_dict,
-                           race_dict=race_dict,
-                           admission_source_id_dict=admission_source_id_dict,
-                           admission_type_id_dict=admission_type_id_dict,
-                           discharge_disposition_id_dict=discharge_disposition_id_dict,
-                           change_dict=change_dict,
-                           icd9_codes_dict=icd9_codes_dict,
-                           max_glu_serum_dict=max_glu_serum_dict,
-                           A1Cresult_dict=A1Cresult_dict,
-                           diabetesMed_dict=diabetesMed_dict,
-                           medicines_dict=medicines_dict)
-
-@app.route('/result')
-def result():
-    prediction = request.args.get('prediction')
-    return render_template('result.html', result=prediction)
-
+    except Exception as e:
+        return jsonify({"error": f"An error occurred: {str(e)}"}), 500
 if __name__ == '__main__':
     app.run(debug=True)
