@@ -2,13 +2,12 @@ import { asyncHandler } from "../utils/asyncHandler.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import { ApiError } from "../utils/ApiError.js";
 import { User } from "../models/userModel.js";
+import { Doctor } from "../models/doctorModel.js";
+import { Patient } from "../models/patientModel.js";
 import { sendOtpMail } from "../utils/sendOtpMailer.js";
 import { sendForgetPasswordMail } from "../utils/sendForgetPasswordMailer.js";
 import { OtpVerification } from "../models/otpVerificationModel.js";
 import { COOKIE_OPTIONS, ERROR_MESSAGES, RESPONSE_MESSAGES } from "../utils/constants.js";
-// import { OAuth2Client } from 'google-auth-library';
-// import { GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET } from '../config/serverConfig.js';
-// const client = new OAuth2Client(GOOGLE_CLIENT_ID);
 
 export const handleGoogleLogin = asyncHandler(async (req, res) => {
     const { email, name, uid } = req.body; 
@@ -72,6 +71,18 @@ export const handleRegister = asyncHandler(async (req, res) => {
         throw new ApiError(500, "Something went wrong while registering user");
     }
 
+    // Check if the user is a patient and if their email exists in any doctor's patientEmails
+    if (role === "patient") {
+        const doctor = await Doctor.findOne({ patientEmails: email });
+        if (doctor) {
+            await Patient.findOneAndUpdate(
+                { userId: user._id },
+                { myDoctor: doctor._id },
+                { new: true }
+            );
+        }
+    }
+
     try {
         await sendOtpMail(user._id, user.email);
     } catch (error) {
@@ -128,6 +139,18 @@ export const handleLogin = asyncHandler(async (req, res, next) => {
     const isPasswordCorrect = await user.isPasswordCorrect(password);
     if (!isPasswordCorrect)
         throw new ApiError(401, ERROR_MESSAGES.PASSWORD_INCORRECT);
+
+    // Check if the user is a patient and if their email exists in any doctor's patientEmails
+    if (user.role === "patient") {
+        const doctor = await Doctor.findOne({ patientEmails: email });
+        if (doctor) {
+            await Patient.findOneAndUpdate(
+                { userId: user._id },
+                { myDoctor: doctor._id },
+                { new: true }
+            );
+        }
+    }
 
     const token = await user.generateToken();
 
