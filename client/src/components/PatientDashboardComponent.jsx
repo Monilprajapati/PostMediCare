@@ -1,4 +1,4 @@
-import { Bar, Line, Radar, Doughnut } from 'react-chartjs-2';
+import { Bar, Line } from 'react-chartjs-2';
 import {
     Chart as ChartJS,
     CategoryScale,
@@ -6,22 +6,17 @@ import {
     BarElement,
     LineElement,
     PointElement,
-    ArcElement,
-    RadialLinearScale,
     Title,
     Tooltip,
     Legend,
 } from 'chart.js';
 
-// Registering the components required by Chart.js
 ChartJS.register(
     CategoryScale,
     LinearScale,
     BarElement,
     LineElement,
     PointElement,
-    ArcElement,
-    RadialLinearScale,
     Title,
     Tooltip,
     Legend
@@ -83,20 +78,25 @@ function PatientDashboardComponent() {
     };
 
     return (
-        <div className="p-4">
-            <h1 className="text-2xl font-bold mb-4">Patient Dashboard</h1>
-            <div className="grid grid-cols-2 gap-4">
-                <div className="h-64">
+        <div className="p-4 w-full h-screen">
+            <div className="flex justify-between items-center mb-4">
+                <h1 className="text-2xl font-bold mb-4">Patient Dashboard</h1>
+                <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                    Add Sample Data
+                </button>
+            </div>
+            <div className="grid grid-cols-2 gap-4 h-[calc(100%-2rem)]">
+                <div className="h-full">
                     <Bar data={bmiData} options={options} />
                 </div>
-                <div className="h-64">
+                <div className="h-full">
                     <Line data={bpData} options={options} />
                 </div>
-                <div className="h-64">
-                    <Radar data={sugarData} options={options} />
+                <div className="h-full">
+                    <Line data={sugarData} options={options} />
                 </div>
-                <div className="h-64">
-                    <Doughnut data={hba1cData} options={options} />
+                <div className="h-full">
+                    <Line data={hba1cData} options={options} />
                 </div>
             </div>
         </div>
