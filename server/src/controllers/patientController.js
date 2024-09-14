@@ -5,7 +5,6 @@ import { uploadOnCloudinary } from "../utils/cloudinary.js"
 import { Patient } from "../models/patientModel.js"
 import { Doctor } from "../models/doctorModel.js"
 
-
 const handleAddPatientDetails = asyncHandler(async (req, res) => {
 
     const { race, gender, age, weight, timeInHospital, numLabProcedures, numProcedures, numMedications, numOutpatientVisits, numEmergencyVisits, numInpatientVisits, diagnosis1, diagnosis2, diagnosis3, numDiagnoses, maxGluSerum, A1Cresult, changeInMedication, diabetesMed, insulin, glipizide, glyburide, pioglitazone, metformin, admissionSource, admissionType, dischargeDisposition } = req.body;
@@ -19,7 +18,7 @@ const handleAddPatientDetails = asyncHandler(async (req, res) => {
         throw new ApiError(400, "Patient details already exists");
     }
 
-    const doctor = await Doctor.findOne({ patientEmails: req.user.email });
+    const doctor = await Doctor.findOne({ patientEmails: { $in: [req.user.email] } });
 
     const imageLocalPath = req.file?.path;
     let imageUrl;
