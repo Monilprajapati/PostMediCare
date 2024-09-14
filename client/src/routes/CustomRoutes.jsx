@@ -28,6 +28,7 @@ import PatientDashboardComponent from "../components/PatientDashboardComponent";
 import Doctors from "../components/Doctors";
 import DoctorAppointment from "../components/DoctorAppointment";
 import DoctorDashboardComponent from "../components/DoctorDashboardComponent";
+import PatientDetails from "../components/PatientDetails";
 
 const CustomRoutes = () => {
   const { userRole } = useUserContext();
@@ -106,7 +107,6 @@ const CustomRoutes = () => {
         />
         <Route path="precautions" element={<Precautions />} />
         <Route path="my-doctor" element={<MyDoctor />} />
-        {/* <Route path="appointments" element={<Appointments />} /> */}
         <Route path="calendar" element={<CalenderView />} />
         <Route path="notification" element={<Notification />} />
         <Route path="doctors" element={<Doctors />} />
@@ -121,13 +121,14 @@ const CustomRoutes = () => {
         path="/doctor-dashboard"
         element={
           <ProtectedRoute role={roleOptions[1].value}>
-            <DoctorDashboardComponent/>
+            <DoctorDashboard />
           </ProtectedRoute>
         }
       >
-        <Route index element={<DoctorDashboard />} />
+        <Route index element={<DoctorDashboardComponent />} />
         <Route path="patients" element={<MyPatients />} />
         <Route path="appointment" element={<DoctorAppointments />} />
+        <Route path="patient/:patientId" element={<PatientDetails />} />
         <Route path="my-resources" element={<MyResources />} />
         <Route path="contactus" element={<ContactUs />} />
         <Route path="resources" element={<Resources />} />
