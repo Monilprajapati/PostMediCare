@@ -4,7 +4,7 @@ import numpy as np
 from src.AIDRP.pipeline.prediction import PredictionPipeline
 
 app = Flask(__name__)
-CORS(app, resources={r"/*": {"origins": "http://localhost:3000"}})
+CORS(app, supports_credentials=True, resources={r"/predict": {"origins": "http://localhost:3000"}})
 
 # Mapping dictionaries
 age_dict = {'[0-10)': 1, '[10-20)': 2, '[20-30)': 3, '[30-40)': 4, '[40-50)': 5, '[50-60)': 6, '[60-70)': 7, '[70-80)': 8, '[80-90)': 9, '[90-100)': 10}
@@ -22,17 +22,16 @@ medicines_dict = {'No': 1, 'Up': 3, 'Steady': 2, 'Down': 0}
 @app.route('/predict', methods=['POST'])
 def predict():
     # Parse JSON data from the request
-    data = request.get_json()
-
-
+    # data = request.get_json()
+    data = request.json
 
     # Map the input data using the dictionaries
     input_data = [
         age_dict[data['age']],
         race_dict[data['race']],
-        admission_source_id_dict[data['admission_source_id']],
-        admission_type_id_dict[data['admission_type_id']],
-        discharge_disposition_id_dict[data['discharge_disposition_id']],
+        admission_source_id_dict["9, 15, 17, 20, 21"],
+        admission_type_id_dict["1, 4"],
+        discharge_disposition_id_dict["1, 6, 8"],
         int(data['num_lab_procedures']),
         int(data['num_medications']),
         change_dict[data['change']],
@@ -63,7 +62,6 @@ def predict():
 
     # Return the prediction as a JSON response
     response = {"readmit_in_30_days": int(predicted_value)}
-    print(response)
     return jsonify(response)
 
 if __name__ == '__main__':

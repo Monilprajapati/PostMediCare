@@ -100,6 +100,9 @@ export default function RiskAdmission() {
     }
 
     const sampleMedicalDetails = {
+        age: "[50-60)",
+        race: 'Caucasian',
+       
         time_in_hospital: 1,
         num_lab_procedures: 2,
         num_procedures: 3,
@@ -112,7 +115,7 @@ export default function RiskAdmission() {
         diag_3: '280-289',
         number_diagnoses: 3,
         max_glu_serum: '>200',
-        A1Cresult: 'Normal',
+        A1Cresult: 'Norm',
         metformin: 'No',
         insulin: 'No',
         glipizide: 'No',
@@ -131,12 +134,12 @@ export default function RiskAdmission() {
         // setRiskResponse(result);
 
         try {
-            const response = await fetch('http://localhost:5000/predict', {
+            const response = await fetch('http://localhost:8000/predict', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify(medicalDetails)
+                body: JSON.stringify(sampleMedicalDetails)
             })
             const data = await response.json();
             // setRiskResponse(data);

@@ -133,9 +133,9 @@ const MyResources = () => {
       </form>
 
       {/* List of resources */}
-      <h3 className="text-2xl font-semibold mb-6">Your Resources</h3>
+      <h3 className="text-2xl font-semibold mb-6 px-10">Your Resources</h3>
       {resources.length > 0 ? (
-        <ul className="space-y-4">
+        <ul className="space-y-6 px-10">
           {resources.map((resource, index) => (
             <li
               key={index}
