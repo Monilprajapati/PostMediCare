@@ -72,6 +72,10 @@ const DoctorSchema = new Schema({
     },
     emergencyContact: {
         type: String,
+    },
+    patientEmails: {
+        type: [String], // Store patient emails
+        default: []
     }
 }, {
     timestamps: true

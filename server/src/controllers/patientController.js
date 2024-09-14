@@ -3,13 +3,14 @@ import { ApiResponse } from "../utils/ApiResponse.js"
 import { asyncHandler } from "../utils/asyncHandler.js"
 import { uploadOnCloudinary } from "../utils/cloudinary.js"
 import { Patient } from "../models/patientModel.js"
+import { Doctor } from "../models/doctorModel.js"
 
 
 const handleAddPatientDetails = asyncHandler(async (req, res) => {
 
-    const { race, gender, age, weight, time_in_hospital, num_lab_procedures, num_procedures, num_medications, number_outpatient, number_emergency, number_inpatient, diag_1, diag_2, diag_3, number_diagnoses, max_glu_serum, A1Cresult, medications, change, diabetesMed } = req.body;
+    const { race, gender, age, weight, timeInHospital, numLabProcedures, numProcedures, numMedications, numOutpatientVisits, numEmergencyVisits, numInpatientVisits, diagnosis1, diagnosis2, diagnosis3, numDiagnoses, maxGluSerum, A1Cresult, changeInMedication, diabetesMed, insulin, glipizide, glyburide, pioglitazone, metformin, admissionSource, admissionType, dischargeDisposition } = req.body;
 
-    if (!userId || !race || !gender || !age || !weight || !time_in_hospital || !num_lab_procedures || !num_procedures || !num_medications || !number_outpatient || !number_emergency || !number_inpatient || !diag_1 || !number_diagnoses || !max_glu_serum || !A1Cresult || !medications || !change || !diabetesMed) {
+    if (!race || !gender || !age || !weight || !timeInHospital || !numLabProcedures || !numProcedures || !numMedications || !numOutpatientVisits || !numEmergencyVisits || !numInpatientVisits || !diagnosis1 || !diagnosis2 || !diagnosis3 || !numDiagnoses || !maxGluSerum || !A1Cresult || !changeInMedication || !diabetesMed || !insulin || !glipizide || !glyburide || !pioglitazone || !metformin || !admissionSource || !admissionType || !dischargeDisposition) {
         throw new ApiError(400, "All fields are required in handling add details");
     }
 
@@ -17,6 +18,8 @@ const handleAddPatientDetails = asyncHandler(async (req, res) => {
     if (isPatientDetailsExists) {
         throw new ApiError(400, "Patient details already exists");
     }
+
+    const doctor = await Doctor.findOne({ patientEmails: req.user.email });
 
     const imageLocalPath = req.file?.path;
     let imageUrl;
@@ -34,27 +37,35 @@ const handleAddPatientDetails = asyncHandler(async (req, res) => {
 
     const newPatient = await Patient.create({
         userId: req.user._id,
-        image: imageUrl,
+        profilePicture: imageUrl,
         race,
         gender,
         age,
         weight,
-        time_in_hospital,
-        num_lab_procedures,
-        num_procedures,
-        num_medications,
-        number_outpatient,
-        number_emergency,
-        number_inpatient,
-        diag_1,
-        diag_2,
-        diag_3,
-        number_diagnoses,
-        max_glu_serum,
+        timeInHospital,
+        numLabProcedures,
+        numProcedures,
+        numMedications,
+        numOutpatientVisits,
+        numEmergencyVisits,
+        numInpatientVisits,
+        diagnosis1,
+        diagnosis2,
+        diagnosis3,
+        numDiagnoses,
+        maxGluSerum,
         A1Cresult,
-        medications,
-        change,
-        diabetesMed
+        changeInMedication,
+        diabetesMed,
+        insulin,
+        glipizide,
+        glyburide,
+        pioglitazone,
+        metformin,
+        admissionSource,
+        admissionType,
+        dischargeDisposition,
+        myDoctor: doctor ? doctor._id : "" // Add the doctor's ID here
     });
 
     res.status(201).json(new ApiResponse(201, newPatient, "Patient details added successfully"));

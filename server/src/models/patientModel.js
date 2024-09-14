@@ -7,96 +7,123 @@ const PatientSchema = new Schema({
         ref: "User",
         required: true
     },
+    myDoctor: {
+        type: Schema.Types.ObjectId,
+        ref: "Doctor",
+        required: true
+    },
     profilePicture: {
         type: String,
         required: true
     },
-    race: {
-        type: String,
-        required: true,
-    },
     gender: {
         type: String,
-        required: true,
-    },
-    age: {
-        type: String, // Could use String for age ranges or Number for specific age
         required: true,
     },
     weight: {
         type: Number, // Store weight in kilograms
         required: true,
     },
-    time_in_hospital: {
-        type: Number,
-        required: true,
-    },
-    num_lab_procedures: {
-        type: Number,
-        required: true,
-    },
-    num_procedures: {
-        type: Number,
-        required: true,
-    },
-    num_medications: {
-        type: Number,
-        required: true,
-    },
-    number_outpatient: {
-        type: Number,
-        required: true,
-    },
-    number_emergency: {
-        type: Number,
-        required: true,
-    },
-    number_inpatient: {
-        type: Number,
-        required: true,
-    },
-    diag_1: {
+   
+    age: {
         type: String,
         required: true,
     },
-    diag_2: {
+    race: {
         type: String,
+        enum: ['AfricanAmerican', 'Asian', 'Caucasian', 'Hispanic', 'Other'],
+        required: true,
     },
-    diag_3: {
-        type: String,
+    admissionSource: {
+        type: [Number],
+        required: true,
     },
-    number_diagnoses: {
+    admissionType: {
+        type: [Number],
+        required: true,
+    },
+    dischargeDisposition: {
+        type: [Number],
+        required: true,
+    },
+    numLabProcedures: {
         type: Number,
         required: true,
     },
-    max_glu_serum: {
+    numMedications: {
+        type: Number,
+        required: true,
+    },
+    changeInMedication: {
         type: String,
-        enum: ["None", ">200", ">300", "Normal"],
+        required: true,
+    },
+    numDiagnoses: {
+        type: Number,
+        required: true,
+    },
+    numProcedures: {
+        type: Number,
+        required: true,
+    },
+    numOutpatientVisits: {
+        type: Number,
+        required: true,
+    },
+    numInpatientVisits: {
+        type: Number,
+        required: true,
+    },
+    numEmergencyVisits: {
+        type: Number,
+        required: true,
+    },
+    timeInHospital: {
+        type: Number,
+        required: true,
+    },
+    diagnosis1: {
+        type: String,
+        required: true,
+    },
+    diagnosis2: {
+        type: String,
+        required: true,
+    },
+    diagnosis3: {
+        type: String,
+        required: true,
+    },
+    maxGluSerum: {
+        type: String,
         required: true,
     },
     A1Cresult: {
         type: String,
-        enum: ["None", "<7", ">7"],
-        required: true,
-    },
-    medications: {
-        metformin: { type: String, enum: ["Yes", "No"], required: true },
-        insulin: { type: String, enum: ["Yes", "No"], required: true },
-        other_medications: [
-            {
-                name: String,
-                prescribed: { type: String, enum: ["Yes", "No"] },
-            },
-        ],
-    },
-    change: {
-        type: String,
-        enum: ["Yes", "No"],
         required: true,
     },
     diabetesMed: {
         type: String,
-        enum: ["Yes", "No"],
+        required: true,
+    },
+    metformin: {
+        type: String,
+        required: true,
+    },
+    insulin: {
+        type: String,
+        required: true,
+    },
+    glipizide: {
+        type: String,
+        required: true,
+    },
+    glyburide: {
+        type: String,
+        required: true,
+    },
+    pioglitazone: {
+        type: String,
         required: true,
     },
 }, {

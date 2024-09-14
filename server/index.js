@@ -27,7 +27,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(
     cors({
-        origin: [FRONTEND_URL, "https://htm-nu.vercel.app"],
+        origin: [FRONTEND_URL, "https://htm-nu.vercel.app", "https://post-medi-care.vercel.app"],
         methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
         credentials: true,
         allowedHeaders: ["Content-Type", "Authorization"],

@@ -3,12 +3,13 @@ import { ApiResponse } from "../utils/ApiResponse.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { uploadOnCloudinary } from "../utils/cloudinary.js";
 import { Doctor } from "../models/doctorModel.js";
-
+import { Patient } from "../models/patientModel.js";
+import { sendRegistrationMail } from "../utils/sendRegistrationMailer.js"; // Import the new mailer function
 
 const handleAddDoctorDetails = asyncHandler(async (req, res) => {
-    const { userId, phoneNumber, specialization, medicalLicenseNumber, yearsOfExperience, qualifications, affiliatedHospitals, clinicAddress, consultationHours, biography, languagesSpoken, consultationFees, telemedicineAvailability, status, socialMediaLinks, specialAchievements, memberships, emergencyContact } = req.body;
+    const { phoneNumber, specialization, medicalLicenseNumber, yearsOfExperience, qualifications, affiliatedHospitals, clinicAddress, consultationHours, biography, languagesSpoken, consultationFees, telemedicineAvailability, status, socialMediaLinks, specialAchievements, memberships, emergencyContact, patientEmails } = req.body;
 
-    if (!userId || !phoneNumber || !specialization || !medicalLicenseNumber || !yearsOfExperience || !qualifications || !affiliatedHospitals || !clinicAddress || !consultationHours) {
+    if (!phoneNumber || !specialization || !medicalLicenseNumber || !yearsOfExperience || !qualifications || !affiliatedHospitals || !clinicAddress || !consultationHours) {
         throw new ApiError(400, "All required fields must be provided");
     }
 
@@ -50,10 +51,12 @@ const handleAddDoctorDetails = asyncHandler(async (req, res) => {
         socialMediaLinks,
         specialAchievements,
         memberships,
-        emergencyContact
+        emergencyContact,
+        patientEmails // Add patient emails
     });
 
-    res.status(201).json(new ApiResponse(201, newDoctor, "Doctor details added successfully"));
+
+    return res.status(201).json(new ApiResponse(201, newDoctor, "Doctor details added successfully"));
 });
 
 const handleGetDoctorDetails = asyncHandler(async (req, res) => {
@@ -61,7 +64,7 @@ const handleGetDoctorDetails = asyncHandler(async (req, res) => {
     if (!doctorDetails) {
         throw new ApiError(404, "Doctor details not found");
     }
-    res.status(200).json(new ApiResponse(200, doctorDetails, "Doctor details retrieved successfully"));
+    return res.status(200).json(new ApiResponse(200, doctorDetails, "Doctor details retrieved successfully"));
 });
 
 const handleUpdateDoctorDetails = asyncHandler(async (req, res) => {
@@ -76,22 +79,57 @@ const handleUpdateDoctorDetails = asyncHandler(async (req, res) => {
         updatedDetails.profilePicture = result.secure_url;
     }
 
-    const updatedDoctor = await Doctor.findOneAndUpdate(
-        { userId: req.user._id },
-        updatedDetails,
-        { new: true }
-    );
-
-    if (!updatedDoctor) {
+    const doctor = await Doctor.findOne({ userId: req.user._id });
+    if (!doctor) {
         throw new ApiError(404, "Doctor details not found");
     }
 
-    res.status(200).json(new ApiResponse(200, updatedDoctor, "Doctor details updated successfully"));
+    // Append new emails to the existing patientEmails array if provided
+    if (updatedDetails.patientEmails) {
+        doctor.patientEmails = [...new Set([...doctor.patientEmails, ...updatedDetails.patientEmails])];
+        delete updatedDetails.patientEmails; // Remove patientEmails from updatedDetails to avoid overwriting
+    }
+
+    // Update other attributes
+    Object.assign(doctor, updatedDetails);
+    const updatedDoctor = await doctor.save();
+
+    return res.status(200).json(new ApiResponse(200, updatedDoctor, "Doctor details updated successfully"));
+});
+
+const handleAddPatientByEmail = asyncHandler(async (req, res) => {
+    const { patientEmail } = req.body;
+
+    if (!patientEmail) {
+        throw new ApiError(400, "Patient email must be provided");
+    }
+
+    const doctor = await Doctor.findOne({ userId: req.user._id });
+    if (!doctor) {
+        throw new ApiError(404, "Doctor not found");
+    }
+
+    // Add the patient email to the patientEmails array if it doesn't already exist
+    if (!doctor.patientEmails.includes(patientEmail)) {
+        doctor.patientEmails.push(patientEmail);
+        await doctor.save();
+    }
+
+    // Send registration email to the patient
+    try {
+        await sendRegistrationMail(patientEmail);
+    } catch (error) {
+        throw new ApiError(500, "Failed to send registration email");
+    }
+
+    return res.status(200).json(new ApiResponse(200, {}, "Patient email added and registration email sent successfully"));
 });
 
 export {
     handleAddDoctorDetails,
     handleGetDoctorDetails,
-    handleUpdateDoctorDetails
+    handleUpdateDoctorDetails,
+    handleAddPatientByEmail // Export the new function
 };
+
 
