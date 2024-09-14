@@ -137,6 +137,11 @@ function DialogBox({ open, setOpen }) {
         });
     }
 
+    const handleSubmit = () => {
+        console.log(medicalDetails);
+        setOpen(false);
+    }
+
     return (
         <Dialog open={open} onClose={setOpen} className="relative z-10">
             <DialogBackdrop
@@ -189,7 +194,7 @@ function DialogBox({ open, setOpen }) {
                         <div className="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
                             <button
                                 type="button"
-                                onClick={() => setOpen(false)}
+                                onClick={() => handleSubmit()}
                                 className="inline-flex w-full justify-center rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto"
                             >
                                 Add

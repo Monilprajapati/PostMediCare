@@ -103,7 +103,7 @@ const CustomRoutes = () => {
         />
         <Route path="precautions" element={<Precautions />} />
         <Route path="my-doctor" element={<MyDoctor />} />
-        <Route path="appointments" element={<Appointments />} />
+        {/* <Route path="appointments" element={<Appointments />} /> */}
         <Route path="calendar" element={<CalenderView />} />
         <Route path="notification" element={<Notification />} />
         <Route path="contactus" element={<ContactUs />} />

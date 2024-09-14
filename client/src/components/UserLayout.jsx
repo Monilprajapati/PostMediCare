@@ -33,12 +33,12 @@ const navigation = [
     icon: HomeIcon,
     current: true,
   },
-  {
-    name: "Appointments",
-    href: "/patient-dashboard/appointments",
-    icon: CalendarIcon,
-    current: false,
-  },
+  // {
+  //   name: "Appointments",
+  //   href: "/patient-dashboard/appointments",
+  //   icon: CalendarIcon,
+  //   current: false,
+  // },
   {
     name: "Precautions",
     href: "/patient-dashboard/precautions",

@@ -131,8 +131,11 @@ export default function RiskAdmission() {
         // setRiskResponse(result);
 
         try {
-            const response = await fetch('https://post-medi-care-m5td.vercel.app/predict', {
+            const response = await fetch('http://localhost:5000/predict', {
                 method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
                 body: JSON.stringify(medicalDetails)
             })
             const data = await response.json();
