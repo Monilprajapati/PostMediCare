@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { CheckIcon } from '@heroicons/react/24/solid'
 import PatientDetailsForm from './PatientDetailsForm';
 import PatientMedicalDetailsForm from './PatientMedicalDetailsForm';
+import PreviewPatientInfo from './PreviewPatientInfo';
 
 const steps = [
     { id: '01', name: 'Patient Details', description: 'Basic patient information', href: '#', status: 'current' },
@@ -193,33 +194,12 @@ function AddRequiredMedicalDetailsComponent() {
                     />
                 )}
                 {currentStep === 2 && (
-                    <div>
-                        <h2 className="text-lg font-semibold mb-4">Preview of all information</h2>
-                        <div>
-                            <h3 className="text-md font-medium mb-2">Patient Details</h3>
-                            <pre className="bg-gray-100 p-4 rounded-md overflow-x-auto">{JSON.stringify(patientDetails, null, 2)}</pre>
-                        </div>
-                        <div className="mt-4">
-                            <h3 className="text-md font-medium mb-2">Medical Details</h3>
-                            <pre className="bg-gray-100 p-4 rounded-md overflow-x-auto">{JSON.stringify(medicalDetails, null, 2)}</pre>
-                        </div>
-                        <div className="mt-6 flex justify-between">
-                            <button
-                                type="button"
-                                onClick={handlePrev}
-                                className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-gray-600 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
-                            >
-                                Previous
-                            </button>
-                            <button
-                                type="button"
-                                onClick={handleSubmit}
-                                className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
-                            >
-                                Submit Details
-                            </button>
-                        </div>
-                    </div>
+                    <PreviewPatientInfo
+                        handlePrev={handlePrev}
+                        patientDetails={patientDetails}
+                        medicalDetails={medicalDetails}
+                        handleSubmit={handleSubmit}
+                    />
                 )}
             </div>
         </div>

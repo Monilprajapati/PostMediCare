@@ -9,43 +9,6 @@ function PatientMedicalDetailsForm({ handleNext, handlePrev, medicalDetails, set
         });
     }
 
-    const validateMedicalDetails = () => {
-        const numericFields = [
-            'time_in_hospital',
-            'num_lab_procedures',
-            'num_procedures',
-            'num_medications',
-            'number_outpatient',
-            'number_emergency',
-            'number_inpatient',
-            'number_diagnoses',
-        ];
-        const stringFields = [
-            'diag_1',
-            'diag_2',
-            'diag_3',
-            'max_glu_serum',
-            'A1Cresult',
-            'metformin',
-            'insulin',
-            'glipizide',
-            'glyburide',
-            'pioglitazone',
-            'change',
-            'diabetesMed'
-        ];
-
-        const isValidNumeric = numericFields.every(field =>
-            Number.isInteger(medicalDetails[field]) && medicalDetails[field] >= 0
-        );
-
-        const isValidString = stringFields.every(field =>
-            typeof medicalDetails[field] === 'string' && medicalDetails[field].trim() !== ''
-        );
-
-        return isValidNumeric && isValidString;
-    };
-
     const sampleMedicalDetails = {
         time_in_hospital: 7,
         num_lab_procedures: 15,
@@ -77,6 +40,7 @@ function PatientMedicalDetailsForm({ handleNext, handlePrev, medicalDetails, set
         <div>
             <form>
                 <h2 className="text-lg font-semibold mb-4">Medical Details</h2>
+                <h3 className="text-sm text-gray-600 mb-4">Fell free to skip this section if you do not have the information</h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     {/* Existing input fields for time_in_hospital, num_lab_procedures, num_procedures, num_medications, number_outpatient, number_emergency, number_inpatient, number_diagnoses remain unchanged */}
 
@@ -301,10 +265,7 @@ function PatientMedicalDetailsForm({ handleNext, handlePrev, medicalDetails, set
                     </button>
                     <button
                         type="button"
-                        onClick={() => {
-                            validateMedicalDetails()
-                            handleNext()
-                        }}
+                        onClick={handleNext}
                         className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                     >
                         Next
