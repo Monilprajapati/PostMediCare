@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
+
 const genAI = new GoogleGenerativeAI('AIzaSyCjZPbRiJ0BRuzX5vfmoB5_v4lR6_mc0j4');
 
 const model = genAI.getGenerativeModel({
@@ -99,11 +100,11 @@ export default function RiskAdmission() {
     }
 
     const sampleMedicalDetails = {
-        time_in_hospital: 7,
-        num_lab_procedures: 15,
-        num_procedures: 4,
-        num_medications: 6,
-        number_inpatient: 1,
+        time_in_hospital: 1,
+        num_lab_procedures: 2,
+        num_procedures: 3,
+        num_medications: 4,
+        number_inpatient: 3,
         number_outpatient: 2,
         number_emergency: 1,
         diag_1: '390-459',
@@ -111,14 +112,14 @@ export default function RiskAdmission() {
         diag_3: '280-289',
         number_diagnoses: 3,
         max_glu_serum: '>200',
-        A1Cresult: '>7',
-        metformin: 'Up',
-        insulin: 'Steady',
+        A1Cresult: 'Normal',
+        metformin: 'No',
+        insulin: 'No',
         glipizide: 'No',
         glyburide: 'No',
         pioglitazone: 'No',
-        change: 'Yes',
-        diabetesMed: 'Yes',
+        change: 'No',
+        diabetesMed: 'No',
     };
 
     const fillSampleMedicalDetails = () => {
@@ -126,9 +127,22 @@ export default function RiskAdmission() {
     }
 
     const handleRiskResponse = async () => {
-        const result = await checkRisk(medicalDetails);
-        setRiskResponse(result);
+        // const result = await checkRisk(medicalDetails);
+        // setRiskResponse(result);
+
+        try {
+            const response = await fetch('https://post-medi-care-m5td.vercel.app/predict', {
+                method: 'POST',
+                body: JSON.stringify(medicalDetails)
+            })
+            const data = await response.json();
+            // setRiskResponse(data);
+            console.log(data);
+        } catch (error) {
+            console.log(error);
+        }
     }
+
 
     return (
         <div className="flex">
@@ -381,3 +395,4 @@ export default function RiskAdmission() {
         </div>
     )
 }
+
