@@ -18,6 +18,13 @@ import NotFound404 from "../components/NotFound404";
 import PatientDashboard from "../pages/PatientDashboard";
 import DoctorDashboard from "../pages/DoctorDashboard";
 import AddRequiredMedicalDetails from "../pages/AddRequiredMedicalDetails";
+import MyPatients from "../components/MyPatients";
+import DoctorAppointments from "../components/DoctorAppointments";
+import MyResources from "../components/MyResources";
+import ContactUs from "../components/ContactUs";
+import Resources from "../components/Resources";
+import CalenderView from "../components/CalenderView";
+import Notification from "../components/Notification";
 
 const CustomRoutes = () => {
   const { userRole } = useUserContext();
@@ -86,11 +93,22 @@ const CustomRoutes = () => {
           </ProtectedRoute>
         }
       >
-        <Route index element={<div className="w-full flex justify-center items-center">Hi there</div>} />
+        <Route
+          index
+          element={
+            <div className="w-full flex justify-center items-center">
+              Hi there
+            </div>
+          }
+        />
         <Route path="precautions" element={<Precautions />} />
         <Route path="my-doctor" element={<MyDoctor />} />
         <Route path="appointments" element={<Appointments />} />
         <Route path="recommendations" element={<Recommendations />} />
+        <Route path="calendar" element={<CalenderView />} />
+        <Route path="notification" element={<Notification />} />
+        <Route path="contactus" element={<ContactUs />} />
+        <Route path="resources" element={<Resources />} />
         <Route path="*" element={<NotFound404 />} />
       </Route>
 
@@ -102,12 +120,20 @@ const CustomRoutes = () => {
           </ProtectedRoute>
         }
       >
-        <Route index element={<div className="w-full flex justify-center items-center">
-          Hi there default
-        </div>} />
-        <Route path="something" element={<div className="w-full flex justify-center items-center">
-          Hi there 2 (some path)
-        </div>} />
+        <Route
+          index
+          element={
+            <div className="w-full flex justify-center items-center">
+              Doctor Dashboard
+            </div>
+          }
+        />
+        <Route path="patients" element={<MyPatients />} />
+        <Route path="appointment" element={<DoctorAppointments />} />
+        <Route path="my-resources" element={<MyResources />} />
+        <Route path="contactus" element={<ContactUs />} />
+        <Route path="resources" element={<Resources />} />
+        <Route path="*" element={<NotFound404 />} />
       </Route>
 
       <Route

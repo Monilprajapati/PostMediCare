@@ -12,15 +12,15 @@ import {
 import {
   Bars3Icon,
   BellIcon,
-  ChartPieIcon,
   CalendarIcon,
+  ChartPieIcon,
   ChatBubbleLeftRightIcon,
   HomeIcon,
   UsersIcon,
   XMarkIcon,
-  BookOpenIcon,
+  BookOpenIcon
 } from "@heroicons/react/24/outline";
-import { ChevronDownIcon } from "@heroicons/react/20/solid";
+import {  ChevronDownIcon } from "@heroicons/react/20/solid";
 import { useUserContext } from "../contexts/userContext";
 import Logo from "./Logo";
 import { Link, useNavigate } from "react-router-dom";
@@ -29,48 +29,40 @@ import { useLocation } from "react-router-dom";
 const navigation = [
   {
     name: "Dashboard",
-    href: "/patient-dashboard",
+    href: "/doctor-dashboard",
     icon: HomeIcon,
     current: true,
   },
   {
-    name: "Appointments",
-    href: "/patient-dashboard/appointments",
+    name: "Appointment",
+    href: "/doctor-dashboard/appointment",
     icon: CalendarIcon,
     current: false,
   },
   {
-    name: "Precautions",
-    href: "/patient-dashboard/precautions",
-    icon: BellIcon,
-    current: false,
-  },
-  {
-    name: "Recommendations",
-    href: "/patient-dashboard/recommendations",
+    name: "My Resources",
+    href: "/doctor-dashboard/my-resources",
     icon: ChartPieIcon,
     current: false,
   },
   {
-    name: "My Doctor",
-    href: "/patient-dashboard/my-doctor",
-    icon: UsersIcon,
-    current: false,
-  },
-  {
     name: "Contact Us",
-    href: "/patient-dashboard/contactus",
+    href: "/doctor-dashboard/contactus",
     icon: ChatBubbleLeftRightIcon,
     current: false,
   },
   {
     name: "Resources",
-    href: "/patient-dashboard/resources",
+    href: "/doctor-dashboard/resources",
     icon: BookOpenIcon,
     current: false,
   },
 ];
-
+// const teams = [
+//   { id: 1, name: 'Heroicons', href: '#', initial: 'H', current: false },
+//   { id: 2, name: 'Tailwind Labs', href: '#', initial: 'T', current: false },
+//   { id: 3, name: 'Workcation', href: '#', initial: 'W', current: false },
+// ]
 const userNavigation = [
   { name: "Your profile", path: "/profile" },
   { name: "Sign out", path: "#" },
@@ -81,7 +73,7 @@ function classNames(...classes) {
 }
 
 // eslint-disable-next-line react/prop-types
-export default function UserLayout({ children }) {
+export default function DoctorLayout({ children }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const { user, logout } = useUserContext();
   const location = useLocation();
@@ -226,7 +218,7 @@ export default function UserLayout({ children }) {
             <nav className="flex flex-1 flex-col">
               <ul role="list" className="flex flex-1 flex-col gap-y-7">
                 <li>
-                  <ul role="list" className="-mx-2 space-y-2">
+                  <ul role="list" className="-mx-2 space-y-1">
                     {navigation.map((item) => (
                       <li key={item.name}>
                         <Link
@@ -319,15 +311,6 @@ export default function UserLayout({ children }) {
                 <div className="flex items-center gap-x-4 lg:gap-x-6">
                   <button
                     type="button"
-                    onClick={() => navigate("/patient-dashboard/calendar")}
-                    className="-m-2.5 p-2.5 text-gray-400 hover:text-gray-500"
-                  >
-                    <span className="sr-only">Calendar</span>
-                    <CalendarIcon aria-hidden="true" className="h-6 w-6" />
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => navigate("/patient-dashboard/notification")}
                     className="-m-2.5 p-2.5 text-gray-400 hover:text-gray-500"
                   >
                     <span className="sr-only">View notifications</span>
