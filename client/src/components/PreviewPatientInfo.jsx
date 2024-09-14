@@ -33,16 +33,54 @@ function PreviewPatientInfo({ handlePrev, patientDetails, medicalDetails, handle
                         <dt className="text-sm font-medium text-gray-500">Medical Details</dt>
                         <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
                             <ul className="border border-gray-200 rounded-md divide-y divide-gray-200">
-                                {Object.entries(medicalDetails).map(([key, value]) => (
-                                    <li key={key} className="pl-3 pr-4 py-3 flex items-center justify-between text-sm">
-                                        <div className="w-0 flex-1 flex items-center">
-                                            <span className="ml-2 flex-1 w-0 truncate capitalize">{key.replace('_', ' ')}:</span>
-                                        </div>
-                                        <div className="ml-4 flex-shrink-0">
-                                            <span className="font-medium">{value}</span>
-                                        </div>
-                                    </li>
-                                ))}
+                                <li className="pl-3 pr-4 py-3 flex items-center justify-between text-sm">
+                                    <div className="w-0 flex-1 flex items-center">
+                                        <span className="ml-2 flex-1 w-0 truncate">Blood Sugar:</span>
+                                    </div>
+                                    <div className="ml-4 flex-shrink-0">
+                                        <span className="font-medium">{medicalDetails.bloodSugar}</span>
+                                    </div>
+                                </li>
+                                <li className="pl-3 pr-4 py-3 flex items-center justify-between text-sm">
+                                    <div className="w-0 flex-1 flex items-center">
+                                        <span className="ml-2 flex-1 w-0 truncate">HbA1c:</span>
+                                    </div>
+                                    <div className="ml-4 flex-shrink-0">
+                                        <span className="font-medium">{medicalDetails.HbA1c}</span>
+                                    </div>
+                                </li>
+                                <li className="pl-3 pr-4 py-3 flex items-center justify-between text-sm">
+                                    <div className="w-0 flex-1 flex items-center">
+                                        <span className="ml-2 flex-1 w-0 truncate">Weight (kg):</span>
+                                    </div>
+                                    <div className="ml-4 flex-shrink-0">
+                                        <span className="font-medium">{medicalDetails.weight}</span>
+                                    </div>
+                                </li>
+                                <li className="pl-3 pr-4 py-3 flex items-center justify-between text-sm">
+                                    <div className="w-0 flex-1 flex items-center">
+                                        <span className="ml-2 flex-1 w-0 truncate">Height (cm):</span>
+                                    </div>
+                                    <div className="ml-4 flex-shrink-0">
+                                        <span className="font-medium">{medicalDetails.height}</span>
+                                    </div>
+                                </li>
+                                <li className="pl-3 pr-4 py-3 flex items-center justify-between text-sm">
+                                    <div className="w-0 flex-1 flex items-center">
+                                        <span className="ml-2 flex-1 w-0 truncate">BMI:</span>
+                                    </div>
+                                    <div className="ml-4 flex-shrink-0">
+                                        <span className="font-medium">{medicalDetails.BMI}</span>
+                                    </div>
+                                </li>
+                                <li className="pl-3 pr-4 py-3 flex items-center justify-between text-sm">
+                                    <div className="w-0 flex-1 flex items-center">
+                                        <span className="ml-2 flex-1 w-0 truncate">Blood Pressure:</span>
+                                    </div>
+                                    <div className="ml-4 flex-shrink-0">
+                                        <span className="font-medium">{medicalDetails.bloodPressure?.systolic}/{medicalDetails.bloodPressure?.diastolic}</span>
+                                    </div>
+                                </li>
                             </ul>
                         </dd>
                     </div>

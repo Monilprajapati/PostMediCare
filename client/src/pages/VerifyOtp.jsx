@@ -9,7 +9,7 @@ import roleOptions from "../constants/roleOptions";
 const VerifyOtp = () => {
   const [otpDigits, setOtpDigits] = useState(["", "", "", "", "", ""]);
   const [error, setError] = useState("");
-  const { userId, setIsAuth, user, userRole } = useUserContext();
+  const { userId, setIsAuth, user, userRole, isDetailsAdded } = useUserContext();
   const navigate = useNavigate();
 
   const inputRefs = useRef([]);
@@ -46,26 +46,29 @@ const VerifyOtp = () => {
   };
 
   const handleOTPVerification = async (otp) => {
-    console.log(otp);
     try {
       const data = await verifyUser(otp, userId);
       toast.success(data.message, {
         duration: 900,
       });
       setTimeout(() => {
-        userRole === roleOptions[0].value ? navigate("/patient-dashboard") : navigate("/doctor-dashboard");
+        if (userRole === roleOptions[0].value && !isDetailsAdded) {
+          navigate("/add-required-medical-details");
+        } else {
+          userRole === roleOptions[0].value ? navigate("/patient-dashboard") : navigate("/doctor-dashboard");
+        }
         setIsAuth(true);
-      }, 900);
+      }, 1000);
     } catch (error) {
       console.log("Error : ", error);
       if (error.response.data.message === "User is not verified") {
         toast.error(error.response.data.message);
         setTimeout(() => {
           navigate("/verify");
-        }, 900);
+        }, 1000);
       } else {
         toast.error(error.response.data.message, {
-          duration: 900,
+          duration: 1000,
         });
       }
     }
@@ -123,9 +126,9 @@ const VerifyOtp = () => {
           </Link>
         </div>
         <div className="flex mt-2">
-          <button 
-          onClick={resendOTP}
-          className="underline text-black text-md ml-1">
+          <button
+            onClick={resendOTP}
+            className="underline text-black text-md ml-1">
             <span className="mr-1">|</span> Resend OTP
           </button>
         </div>

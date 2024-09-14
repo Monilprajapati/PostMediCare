@@ -5,7 +5,7 @@ import roleOptions from "../constants/roleOptions";
 import { DNA } from 'react-loader-spinner';
 
 const ProtectedRoute = ({ children, role }) => {
-  const { isAuth, userRole, isLoading } = useUserContext();
+  const { isAuth, userRole, isLoading, isDetailsAdded } = useUserContext();
 
   if (isLoading) {
     return <div className="h-[80vh] w-full flex justify-center items-center">
@@ -30,7 +30,7 @@ const ProtectedRoute = ({ children, role }) => {
     return <Navigate to="/login" />;
 
   if (userRole !== role)
-    return userRole === roleOptions[0].value ? <Navigate to="/patient-dashboard" /> : <Navigate to="/doctor-dashboard" />;
+    return userRole === roleOptions[0].value ? isDetailsAdded ? <Navigate to="/patient-dashboard" /> : <Navigate to="/add-required-medical-details" /> : <Navigate to="/doctor-dashboard" />;
 
   return children;
 }
