@@ -1,5 +1,7 @@
 import React, { useState } from 'react'
 import { CheckIcon } from '@heroicons/react/24/solid'
+import PatientDetailsForm from './PatientDetailsForm';
+import PatientMedicalDetailsForm from './PatientMedicalDetailsForm';
 
 const steps = [
     { id: '01', name: 'Patient Details', description: 'Basic patient information', href: '#', status: 'current' },
@@ -20,6 +22,7 @@ function AddRequiredMedicalDetailsComponent() {
         age: '',
         weight: '',
     });
+
     const [medicalDetails, setMedicalDetails] = useState({
         time_in_hospital: 0,
         num_lab_procedures: 0,
@@ -44,18 +47,21 @@ function AddRequiredMedicalDetailsComponent() {
         setCurrentStep(index);
     }
 
-    const handlePatientDetailsChange = (e) => {
-        setPatientDetails({
-            ...patientDetails,
-            [e.target.name]: e.target.value
-        });
+    const handleNext = () => {
+        if (currentStep < steps.length - 1) {
+            setCurrentStep(currentStep + 1);
+        }
     }
 
-    const handleMedicalDetailsChange = (e) => {
-        setMedicalDetails({
-            ...medicalDetails,
-            [e.target.name]: e.target.value
-        });
+    const handlePrev = () => {
+        if (currentStep > 0) {
+            setCurrentStep(currentStep - 1);
+        }
+    }
+
+    const handleSubmit = () => {
+        // Handle form submission logic here
+        console.log('Form submitted:', { patientDetails, medicalDetails });
     }
 
     return (
@@ -169,67 +175,19 @@ function AddRequiredMedicalDetailsComponent() {
             </div>
             <div className="mt-8 p-6 bg-white rounded-lg shadow-md">
                 {currentStep === 0 && (
-                    <form>
-                        <h2 className="text-lg font-semibold mb-4">Patient Details</h2>
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div>
-                                <label htmlFor="profilePicture" className="block text-sm font-medium text-gray-700 mb-1">Profile Picture URL</label>
-                                <input type="text" id="profilePicture" name="profilePicture" value={patientDetails.profilePicture} onChange={handlePatientDetailsChange} className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm transition duration-150 ease-in-out p-2" placeholder="Enter profile picture URL" />
-                            </div>
-                            <div>
-                                <label htmlFor="race" className="block text-sm font-medium text-gray-700 mb-1">Race</label>
-                                <select id="race" name="race" value={patientDetails.race} onChange={handlePatientDetailsChange} className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-2">
-                                    <option value="">Select race</option>
-                                    <option value="caucasian">Caucasian</option>
-                                    <option value="african-american">African American</option>
-                                    <option value="asian">Asian</option>
-                                    <option value="hispanic">Hispanic</option>
-                                    <option value="other">Other</option>
-                                </select>
-                            </div>
-                            <div>
-                                <label htmlFor="gender" className="block text-sm font-medium text-gray-700 mb-1">Gender</label>
-                                <select id="gender" name="gender" value={patientDetails.gender} onChange={handlePatientDetailsChange} className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-2">
-                                    <option value="">Select gender</option>
-                                    <option value="male">Male</option>
-                                    <option value="female">Female</option>
-                                    <option value="other">Other</option>
-                                </select>
-                            </div>
-                            <div>
-                                <label htmlFor="age" className="block text-sm font-medium text-gray-700 mb-1">Age</label>
-                                <input type="number" id="age" name="age" value={patientDetails.age} onChange={handlePatientDetailsChange} min="0" max="120" className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-2" placeholder="Enter age" />
-                            </div>
-                            <div>
-                                <label htmlFor="weight" className="block text-sm font-medium text-gray-700 mb-1">Weight (kg)</label>
-                                <input type="number" id="weight" name="weight" value={patientDetails.weight} onChange={handlePatientDetailsChange} min="0" step="0.1" className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-2" placeholder="Enter weight in kg" />
-                            </div>
-                        </div>
-                    </form>
+                    <PatientDetailsForm
+                        handleNext={handleNext}
+                        patientDetails={patientDetails}
+                        setPatientDetails={setPatientDetails}
+                    />
                 )}
                 {currentStep === 1 && (
-                    <form>
-                        <h2 className="text-lg font-semibold mb-4">Medical Details</h2>
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div>
-                                <label htmlFor="time_in_hospital" className="block text-sm font-medium text-gray-700 mb-1">Time in Hospital (days)</label>
-                                <input type="number" id="time_in_hospital" name="time_in_hospital" value={medicalDetails.time_in_hospital} onChange={handleMedicalDetailsChange} min="0" className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-2" placeholder="Enter days in hospital" />
-                            </div>
-                            <div>
-                                <label htmlFor="num_lab_procedures" className="block text-sm font-medium text-gray-700 mb-1">Number of Lab Procedures</label>
-                                <input type="number" id="num_lab_procedures" name="num_lab_procedures" value={medicalDetails.num_lab_procedures} onChange={handleMedicalDetailsChange} min="0" className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-2" placeholder="Enter number of lab procedures" />
-                            </div>
-                            <div>
-                                <label htmlFor="num_procedures" className="block text-sm font-medium text-gray-700 mb-1">Number of Procedures</label>
-                                <input type="number" id="num_procedures" name="num_procedures" value={medicalDetails.num_procedures} onChange={handleMedicalDetailsChange} min="0" className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-2" placeholder="Enter number of procedures" />
-                            </div>
-                            <div>
-                                <label htmlFor="num_medications" className="block text-sm font-medium text-gray-700 mb-1">Number of Medications</label>
-                                <input type="number" id="num_medications" name="num_medications" value={medicalDetails.num_medications} onChange={handleMedicalDetailsChange} min="0" className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-2" placeholder="Enter number of medications" />
-                            </div>
-                            {/* Add more fields for other medical details */}
-                        </div>
-                    </form>
+                    <PatientMedicalDetailsForm
+                        handleNext={handleNext}
+                        handlePrev={handlePrev}
+                        medicalDetails={medicalDetails}
+                        setMedicalDetails={setMedicalDetails}
+                    />
                 )}
                 {currentStep === 2 && (
                     <div>
@@ -241,6 +199,22 @@ function AddRequiredMedicalDetailsComponent() {
                         <div className="mt-4">
                             <h3 className="text-md font-medium mb-2">Medical Details</h3>
                             <pre className="bg-gray-100 p-4 rounded-md overflow-x-auto">{JSON.stringify(medicalDetails, null, 2)}</pre>
+                        </div>
+                        <div className="mt-6 flex justify-between">
+                            <button
+                                type="button"
+                                onClick={handlePrev}
+                                className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-gray-600 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
+                            >
+                                Previous
+                            </button>
+                            <button
+                                type="button"
+                                onClick={handleSubmit}
+                                className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+                            >
+                                Submit Details
+                            </button>
                         </div>
                     </div>
                 )}
