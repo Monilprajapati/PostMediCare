@@ -10,6 +10,7 @@ import { useUserContext } from "../contexts/userContext";
 import { validateFormData } from "../utils/validateFormData";
 import GoogleSignInButton from "../components/GoogleSignInButton";
 import roleOptions from "../constants/roleOptions";
+import Navbar from "../components/Navbar";
 
 const UserAuthForm = ({ type }) => {
   const [formData, setFormData] = useState({
@@ -107,7 +108,8 @@ const UserAuthForm = ({ type }) => {
 
   return (
     <AnimationWrapper keyValue={type}>
-      <section className="h-cover flex items-center justify-center px-5 md:px-0">
+      <Navbar/>
+      <section className="h-cover mt-8 flex items-center justify-center px-5 md:px-0">
         <Toaster />
         <form className="max-h-[400px]" onSubmit={handleSubmit}>
           <h1 className="text-4xl font-lato capitalize text-center mb-20">

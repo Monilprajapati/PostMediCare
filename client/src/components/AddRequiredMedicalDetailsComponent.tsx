@@ -1,23 +1,73 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { CheckIcon } from '@heroicons/react/24/solid'
+import PatientDetailsForm from './PatientDetailsForm';
+import PatientMedicalDetailsForm from './PatientMedicalDetailsForm';
 
 const steps = [
-    { id: '01', name: 'Patient Details', description: 'Vitae sed mi luctus laoreet.', href: '#', status: 'complete' },
-    { id: '02', name: 'Medical Details', description: 'Cursus semper viverra.', href: '#', status: 'current' },
-    { id: '03', name: 'Preview', description: 'Penatibus eu quis ante.', href: '#', status: 'upcoming' },
+    { id: '01', name: 'Patient Details', description: 'Basic patient information', href: '#', status: 'current' },
+    { id: '02', name: 'Medical Details', description: 'Patient medical information', href: '#', status: 'upcoming' },
+    { id: '03', name: 'Preview', description: 'Review all information', href: '#', status: 'upcoming' },
 ]
-
 
 function classNames(...classes) {
     return classes.filter(Boolean).join(' ')
 }
 
 function AddRequiredMedicalDetailsComponent() {
+    const [currentStep, setCurrentStep] = useState(0);
+    const [patientDetails, setPatientDetails] = useState({
+        profilePicture: '',
+        race: '',
+        gender: '',
+        age: '',
+        weight: '',
+    });
+
+    const [medicalDetails, setMedicalDetails] = useState({
+        time_in_hospital: 0,
+        num_lab_procedures: 0,
+        num_procedures: 0,
+        num_medications: 0,
+        number_outpatient: 0,
+        number_emergency: 0,
+        number_inpatient: 0,
+        diag_1: '',
+        diag_2: '',
+        diag_3: '',
+        number_diagnoses: 0,
+        max_glu_serum: '',
+        A1Cresult: '',
+        metformin: '',
+        insulin: '',
+        change: '',
+        diabetesMed: '',
+    });
+
+    const handleStepClick = (index) => {
+        setCurrentStep(index);
+    }
+
+    const handleNext = () => {
+        if (currentStep < steps.length - 1) {
+            setCurrentStep(currentStep + 1);
+        }
+    }
+
+    const handlePrev = () => {
+        if (currentStep > 0) {
+            setCurrentStep(currentStep - 1);
+        }
+    }
+
+    const handleSubmit = () => {
+        // Handle form submission logic here
+        console.log('Form submitted:', { patientDetails, medicalDetails });
+    }
+
     return (
-        <div>
-            <h1>Add Required Medical Details</h1>
-            <div className="lg:border-b lg:border-t lg:border-gray-200">
-                <nav aria-label="Progress" className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="container mx-auto px-4 py-8 sm:px-6 lg:px-8">
+            <div className="lg:border-b lg:border-t lg:border-gray-200 mb-8">
+                <nav aria-label="Progress" className="mx-auto max-w-7xl">
                     <ol
                         role="list"
                         className="overflow-hidden rounded-md lg:flex lg:rounded-none lg:border-l lg:border-r lg:border-gray-200"
@@ -31,8 +81,8 @@ function AddRequiredMedicalDetailsComponent() {
                                         'overflow-hidden border border-gray-200 lg:border-0',
                                     )}
                                 >
-                                    {step.status === 'complete' ? (
-                                        <a href={step.href} className="group">
+                                    {stepIdx < currentStep ? (
+                                        <a href={step.href} className="group" onClick={() => handleStepClick(stepIdx)}>
                                             <span
                                                 aria-hidden="true"
                                                 className="absolute left-0 top-0 h-full w-1 bg-transparent group-hover:bg-gray-200 lg:bottom-0 lg:top-auto lg:h-1 lg:w-full"
@@ -54,8 +104,8 @@ function AddRequiredMedicalDetailsComponent() {
                                                 </span>
                                             </span>
                                         </a>
-                                    ) : step.status === 'current' ? (
-                                        <a href={step.href} aria-current="step">
+                                    ) : stepIdx === currentStep ? (
+                                        <a href={step.href} aria-current="step" onClick={() => handleStepClick(stepIdx)}>
                                             <span
                                                 aria-hidden="true"
                                                 className="absolute left-0 top-0 h-full w-1 bg-indigo-600 lg:bottom-0 lg:top-auto lg:h-1 lg:w-full"
@@ -78,7 +128,7 @@ function AddRequiredMedicalDetailsComponent() {
                                             </span>
                                         </a>
                                     ) : (
-                                        <a href={step.href} className="group">
+                                        <a href={step.href} className="group" onClick={() => handleStepClick(stepIdx)}>
                                             <span
                                                 aria-hidden="true"
                                                 className="absolute left-0 top-0 h-full w-1 bg-transparent group-hover:bg-gray-200 lg:bottom-0 lg:top-auto lg:h-1 lg:w-full"
@@ -122,6 +172,52 @@ function AddRequiredMedicalDetailsComponent() {
                         ))}
                     </ol>
                 </nav>
+            </div>
+            <div className="mt-8 p-6 bg-white rounded-lg shadow-md">
+                {currentStep === 0 && (
+                    <PatientDetailsForm
+                        handleNext={handleNext}
+                        patientDetails={patientDetails}
+                        setPatientDetails={setPatientDetails}
+                    />
+                )}
+                {currentStep === 1 && (
+                    <PatientMedicalDetailsForm
+                        handleNext={handleNext}
+                        handlePrev={handlePrev}
+                        medicalDetails={medicalDetails}
+                        setMedicalDetails={setMedicalDetails}
+                    />
+                )}
+                {currentStep === 2 && (
+                    <div>
+                        <h2 className="text-lg font-semibold mb-4">Preview of all information</h2>
+                        <div>
+                            <h3 className="text-md font-medium mb-2">Patient Details</h3>
+                            <pre className="bg-gray-100 p-4 rounded-md overflow-x-auto">{JSON.stringify(patientDetails, null, 2)}</pre>
+                        </div>
+                        <div className="mt-4">
+                            <h3 className="text-md font-medium mb-2">Medical Details</h3>
+                            <pre className="bg-gray-100 p-4 rounded-md overflow-x-auto">{JSON.stringify(medicalDetails, null, 2)}</pre>
+                        </div>
+                        <div className="mt-6 flex justify-between">
+                            <button
+                                type="button"
+                                onClick={handlePrev}
+                                className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-gray-600 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
+                            >
+                                Previous
+                            </button>
+                            <button
+                                type="button"
+                                onClick={handleSubmit}
+                                className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+                            >
+                                Submit Details
+                            </button>
+                        </div>
+                    </div>
+                )}
             </div>
         </div>
     )
