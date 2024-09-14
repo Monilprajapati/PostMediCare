@@ -1,6 +1,8 @@
 import { useUserContext } from "./contexts/userContext";
 import CustomRoutes from "./routes/CustomRoutes";
 import { DNA } from "react-loader-spinner";
+import { Toaster } from 'react-hot-toast';
+
 
 const App = () => {
   const { isLoading } = useUserContext();
@@ -27,6 +29,7 @@ const App = () => {
         <>
           {/* <Navbar /> */}
           <CustomRoutes />
+          <Toaster />
         </>
       )}
     </>

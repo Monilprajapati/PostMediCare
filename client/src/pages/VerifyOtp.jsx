@@ -46,14 +46,13 @@ const VerifyOtp = () => {
   };
 
   const handleOTPVerification = async (otp) => {
-    console.log(otp);
     try {
       const data = await verifyUser(otp, userId);
       toast.success(data.message, {
         duration: 900,
       });
       setTimeout(() => {
-        userRole === roleOptions[0].value ? navigate("/patient-dashboard") : navigate("/doctor-dashboard");
+        userRole === roleOptions[0].value ? navigate("/add-required-medical-details") : navigate("/doctor-dashboard");
         setIsAuth(true);
       }, 900);
     } catch (error) {
@@ -123,9 +122,9 @@ const VerifyOtp = () => {
           </Link>
         </div>
         <div className="flex mt-2">
-          <button 
-          onClick={resendOTP}
-          className="underline text-black text-md ml-1">
+          <button
+            onClick={resendOTP}
+            className="underline text-black text-md ml-1">
             <span className="mr-1">|</span> Resend OTP
           </button>
         </div>

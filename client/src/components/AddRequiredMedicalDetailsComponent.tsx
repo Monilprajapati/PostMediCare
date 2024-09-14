@@ -3,6 +3,8 @@ import { CheckIcon } from '@heroicons/react/24/solid'
 import PatientDetailsForm from './PatientDetailsForm';
 import PatientMedicalDetailsForm from './PatientMedicalDetailsForm';
 import PreviewPatientInfo from './PreviewPatientInfo';
+import { useNavigate } from 'react-router-dom';
+import { Toaster, toast } from 'react-hot-toast';
 
 const steps = [
     { id: '01', name: 'Patient Details', description: 'Basic patient information', href: '#', status: 'current' },
@@ -15,6 +17,7 @@ function classNames(...classes) {
 }
 
 function AddRequiredMedicalDetailsComponent() {
+    const navigate = useNavigate();
     const [currentStep, setCurrentStep] = useState(0);
     const [patientDetails, setPatientDetails] = useState({
         profilePicture: '',
@@ -64,8 +67,21 @@ function AddRequiredMedicalDetailsComponent() {
     }
 
     const handleSubmit = () => {
-        // Handle form submission logic here
-        console.log('Form submitted:', { patientDetails, medicalDetails });
+
+        // resolve the promise and route to patient dashboard
+        toast.promise(
+            new Promise((resolve) => {
+                setTimeout(() => {
+                    navigate("/patient-dashboard");
+                    resolve(0);
+                }, 2000);
+            }),
+            {
+                loading: 'Adding medical details...',
+                success: 'Medical details added successfully',
+                error: 'Failed to add medical details',
+            }
+        );
     }
 
     return (

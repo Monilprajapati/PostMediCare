@@ -10,6 +10,7 @@ export const UserContextProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [userRole, setUserRole] = useState("");
   const [isLoading, setIsLoading] = useState(true);
+  const [isDetailsAdded, setIsDetailsAdded] = useState(false);
 
   useEffect(() => {
     const fetchUserDetails = async () => {
@@ -61,7 +62,9 @@ export const UserContextProvider = ({ children }) => {
         isLoading,
         user,
         setUser,
-        logout
+        logout,
+        isDetailsAdded,
+        setIsDetailsAdded
       }}
     >
       {children}

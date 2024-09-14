@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diabetes Readmission Risk Predictor</title>
+    <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; padding: 20px; }
+        form { max-width: 600px; margin: 0 auto; }
+        label { display: block; margin-top: 10px; }
+        select, input[type="number"] { width: 100%; padding: 5px; margin-top: 5px; }
+        input[type="submit"] { display: block; width: 100%; padding: 10px; margin-top: 20px; background-color: #4CAF50; color: white; border: none; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <h1>Diabetes Readmission Risk Predictor</h1>
+    <form method="POST" action="{{ url_for('index') }}">
+        <label for="age">Age of patient:</label>
+        <select name="age" id="age">
+            {% for key in age_dict %}
+                <option value="{{ key }}">{{ key }}</option>
+            {% endfor %}
+        </select>
+
+        <label for="race">Race of patient:</label>
+        <select name="race" id="race">
+            {% for key in race_dict %}
+                <option value="{{ key }}">{{ key }}</option>
+            {% endfor %}
+        </select>
+
+        <label for="admission_source_id">Admission source id:</label>
+        <select name="admission_source_id" id="admission_source_id">
+            {% for key in admission_source_id_dict %}
+                <option value="{{ key }}">{{ key }}</option>
+            {% endfor %}
+        </select>
+
+        <label for="admission_type_id">Admission type id:</label>
+        <select name="admission_type_id" id="admission_type_id">
+            {% for key in admission_type_id_dict %}
+                <option value="{{ key }}">{{ key }}</option>
+            {% endfor %}
+        </select>
+
+        <label for="discharge_disposition_id">Discharge disposition id:</label>
+        <select name="discharge_disposition_id" id="discharge_disposition_id">
+            {% for key in discharge_disposition_id_dict %}
+                <option value="{{ key }}">{{ key }}</option>
+            {% endfor %}
+        </select>
+
+        <label for="num_lab_procedures">Number of lab procedures:</label>
+        <input type="number" name="num_lab_procedures" id="num_lab_procedures" required>
+
+        <label for="num_medications">Number of medications:</label>
+        <input type="number" name="num_medications" id="num_medications" required>
+
+        <label for="change">Is there was a change in diabetic medications:</label>
+        <select name="change" id="change">
+            {% for key in change_dict %}
+                <option value="{{ key }}">{{ key }}</option>
+            {% endfor %}
+        </select>
+
+        <label for="number_diagnoses">Number of diagnoses:</label>
+        <input type="number" name="number_diagnoses" id="number_diagnoses" required>
+
+        <label for="num_procedures">Number of procedures:</label>
+        <input type="number" name="num_procedures" id="num_procedures" required>
+
+        <label for="number_outpatient">Number of outpatient visits:</label>
+        <input type="number" name="number_outpatient" id="number_outpatient" required>
+
+        <label for="number_inpatient">Number of inpatient visits:</label>
+        <input type="number" name="number_inpatient" id="number_inpatient" required>
+
+        <label for="number_emergency">Number of emergency visits:</label>
+        <input type="number" name="number_emergency" id="number_emergency" required>
+
+        <label for="time_in_hospital">Time in hospital:</label>
+        <input type="number" name="time_in_hospital" id="time_in_hospital" required>
+
+        <label for="diag_1">Diagnosis 1 (primary diagnosis):</label>
+        <select name="diag_1" id="diag_1">
+            {% for key in icd9_codes_dict %}
+                <option value="{{ key }}">{{ key }}</option>
+            {% endfor %}
+        </select>
+
+        <label for="diag_2">Diagnosis 2 (Secondary diagnosis):</label>
+        <select name="diag_2" id="diag_2">
+            {% for key in icd9_codes_dict %}
+                <option value="{{ key }}">{{ key }}</option>
+            {% endfor %}
+        </select>
+
+        <label for="diag_3">Diagnosis 3 (Additional secondary diagnosis):</label>
+        <select name="diag_3" id="diag_3">
+            {% for key in icd9_codes_dict %}
+                <option value="{{ key }}">{{ key }}</option>
+            {% endfor %}
+        </select>
+
+        <label for="max_glu_serum">Glucose serum test result:</label>
+        <select name="max_glu_serum" id="max_glu_serum">
+            {% for key in max_glu_serum_dict %}
+                <option value="{{ key }}">{{ key }}</option>
+            {% endfor %}
+        </select>
+
+        <label for="A1Cresult">A1c test result:</label>
+        <select name="A1Cresult" id="A1Cresult">
+            {% for key in A1Cresult_dict %}
+                <option value="{{ key }}">{{ key }}</option>
+            {% endfor %}
+        </select>
+
+        <label for="diabetesMed">Diabetes medications prescribed:</label>
+        <select name="diabetesMed" id="diabetesMed">
+            {% for key in diabetesMed_dict %}
+                <option value="{{ key }}">{{ key }}</option>
+            {% endfor %}
+        </select>
+
+        <p>Below feature indicates whether the drug was prescribed or there was a change in the dosage:</p>
+
+        <label for="metformin">Metformin:</label>
+        <select name="metformin" id="metformin">
+            {% for key in medicines_dict %}
+                <option value="{{ key }}">{{ key }}</option>
+            {% endfor %}
+        </select>
+
+        <label for="insulin">Insulin:</label>
+        <select name="insulin" id="insulin">
+            {% for key in medicines_dict %}
+                <option value="{{ key }}">{{ key }}</option>
+            {% endfor %}
+        </select>
+
+        <label for="glipizide">Glipizide:</label>
+        <select name="glipizide" id="glipizide">
+            {% for key in medicines_dict %}
+                <option value="{{ key }}">{{ key }}</option>
+            {% endfor %}
+        </select>
+
+        <label for="glyburide">Glyburide:</label>
+        <select name="glyburide" id="glyburide">
+            {% for key in medicines_dict %}
+                <option value="{{ key }}">{{ key }}</option>
+            {% endfor %}
+        </select>
+
+        <label for="pioglitazone">Pioglitazone:</label>
+        <select name="pioglitazone" id="pioglitazone">
+            {% for key in medicines_dict %}
+                <option value="{{ key }}">{{ key }}</option>
+            {% endfor %}
+        </select>
+
+        <input type="submit" value="Submit">
+    </form>
+</body>
+</html>
