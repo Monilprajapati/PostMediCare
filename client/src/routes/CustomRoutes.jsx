@@ -160,6 +160,8 @@ const CustomRoutes = () => {
           </PublicRoute>
         }
       />
+      <Route path="/contactus" element={<ContactUs />} />
+      <Route path="/resources" element={<Resources />} />
     </Routes>
   );
 };
