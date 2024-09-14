@@ -40,6 +40,9 @@ function AddRequiredMedicalDetailsComponent() {
         metformin: '',
         insulin: '',
         change: '',
+        glipizide: '',
+        glyburide: '',
+        pioglitazone: '',
         diabetesMed: '',
     });
 
