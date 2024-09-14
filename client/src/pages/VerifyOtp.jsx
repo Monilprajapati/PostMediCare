@@ -9,7 +9,7 @@ import roleOptions from "../constants/roleOptions";
 const VerifyOtp = () => {
   const [otpDigits, setOtpDigits] = useState(["", "", "", "", "", ""]);
   const [error, setError] = useState("");
-  const { userId, setIsAuth, user, userRole, isDetailsAdded } = useUserContext();
+  const { userId, setIsAuth, user, userRole } = useUserContext();
   const navigate = useNavigate();
 
   const inputRefs = useRef([]);
@@ -52,23 +52,19 @@ const VerifyOtp = () => {
         duration: 900,
       });
       setTimeout(() => {
-        if (userRole === roleOptions[0].value && !isDetailsAdded) {
-          navigate("/add-required-medical-details");
-        } else {
-          userRole === roleOptions[0].value ? navigate("/patient-dashboard") : navigate("/doctor-dashboard");
-        }
+        userRole === roleOptions[0].value ? navigate("/add-required-medical-details") : navigate("/doctor-dashboard");
         setIsAuth(true);
-      }, 1000);
+      }, 900);
     } catch (error) {
       console.log("Error : ", error);
       if (error.response.data.message === "User is not verified") {
         toast.error(error.response.data.message);
         setTimeout(() => {
           navigate("/verify");
-        }, 1000);
+        }, 900);
       } else {
         toast.error(error.response.data.message, {
-          duration: 1000,
+          duration: 900,
         });
       }
     }
