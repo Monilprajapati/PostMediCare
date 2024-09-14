@@ -28,26 +28,12 @@ function AddRequiredMedicalDetailsComponent() {
     });
 
     const [medicalDetails, setMedicalDetails] = useState({
-        time_in_hospital: 0,
-        num_lab_procedures: 0,
-        num_procedures: 0,
-        num_medications: 0,
-        number_outpatient: 0,
-        number_emergency: 0,
-        number_inpatient: 0,
-        diag_1: '',
-        diag_2: '',
-        diag_3: '',
-        number_diagnoses: 0,
-        max_glu_serum: '',
-        A1Cresult: '',
-        metformin: '',
-        insulin: '',
-        change: '',
-        glipizide: '',
-        glyburide: '',
-        pioglitazone: '',
-        diabetesMed: '',
+        bloodSugar: 0,
+        HbA1c: 0,
+        weight: 0,
+        height: 0,
+        BMI: 0,
+        bloodPressure: { systolic: 0, diastolic: 0 },
     });
 
     const handleStepClick = (index) => {
