@@ -12,7 +12,6 @@ import {
 import {
   Bars3Icon,
   BellIcon,
-  ChartPieIcon,
   CalendarIcon,
   ChatBubbleLeftRightIcon,
   HomeIcon,
@@ -43,12 +42,6 @@ const navigation = [
     name: "Precautions",
     href: "/patient-dashboard/precautions",
     icon: BellIcon,
-    current: false,
-  },
-  {
-    name: "Recommendations",
-    href: "/patient-dashboard/recommendations",
-    icon: ChartPieIcon,
     current: false,
   },
   {

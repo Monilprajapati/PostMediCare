@@ -13,7 +13,6 @@ import GoogleSignInButton from "../components/GoogleSignInButton";
 import Precautions from "../components/Precautions/Precautions";
 import MyDoctor from "../components/MyDoctor/MyDoctor";
 import Appointments from "../components/Appointments";
-import Recommendations from "../components/Recommendations";
 import NotFound404 from "../components/NotFound404";
 import PatientDashboard from "../pages/PatientDashboard";
 import DoctorDashboard from "../pages/DoctorDashboard";
@@ -25,6 +24,7 @@ import ContactUs from "../components/ContactUs";
 import Resources from "../components/Resources";
 import CalenderView from "../components/CalenderView";
 import Notification from "../components/Notification";
+import PatientDashboardComponent from "../components/PatientDashboardComponent";
 
 const CustomRoutes = () => {
   const { userRole } = useUserContext();
@@ -97,14 +97,13 @@ const CustomRoutes = () => {
           index
           element={
             <div className="w-full flex justify-center items-center">
-              Hi there
+              <PatientDashboardComponent />
             </div>
           }
         />
         <Route path="precautions" element={<Precautions />} />
         <Route path="my-doctor" element={<MyDoctor />} />
         <Route path="appointments" element={<Appointments />} />
-        <Route path="recommendations" element={<Recommendations />} />
         <Route path="calendar" element={<CalenderView />} />
         <Route path="notification" element={<Notification />} />
         <Route path="contactus" element={<ContactUs />} />
