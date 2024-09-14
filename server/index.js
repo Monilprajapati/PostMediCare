@@ -7,7 +7,7 @@ import authRoute from "./src/routes/authRoute.js";
 import patientRoute from "./src/routes/patientRoute.js";
 import doctorRoute from "./src/routes/doctorRoute.js";
 import adviceRoute from "./src/routes/adviseRoute.js";
-
+import healthDataRoute from "./src/routes/healthDataRoute.js";
 // import appointmentRoute from "./src/routes/appointmentRoute.js";
 import { PORT, FRONTEND_URL } from "./src/config/serverConfig.js";
 
@@ -40,6 +40,7 @@ app.use(`/api/v1/patient`, patientRoute);
 app.use(`/api/v1/doctor`, doctorRoute);
 app.use(`/api/v1/advice`, adviceRoute);
 // app.use(`/api/v1/appointment`, appointmentRoute);
+app.use(`/api/v1/health-data`, healthDataRoute);
 
 app.listen(PORT, () => {
     console.log("Server is running on PORT:", PORT);
