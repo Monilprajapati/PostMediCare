@@ -1,11 +1,12 @@
-
+import { Outlet } from "react-router-dom";
+import DoctorLayout from "../components/DoctorLayout";
 
 const DoctorDashboard = () => {
   return (
-    <div>
-      Doctor Dashboard
-    </div>
-  )
-}
+    <DoctorLayout>
+      <Outlet />
+    </DoctorLayout>
+  );
+};
 
-export default DoctorDashboard
+export default DoctorDashboard;

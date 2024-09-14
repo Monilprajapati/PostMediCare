@@ -15,11 +15,10 @@ import Logo from '../components/Logo'
 import { useUserContext } from '../contexts/userContext'
 
 const navigation = [
-    { name: 'Product', href: '#' },
-    { name: 'Features', href: '#' },
-    { name: 'Marketplace', href: '#' },
-    { name: 'Company', href: '#' },
+    { name: 'Contact Us', href: '/contactus' },
+    { name: 'Resources', href: '/resources' },
 ]
+
 const features = [
     {
         name: 'Push to deploy',
@@ -156,9 +155,9 @@ export default function HomePage() {
                     </div>
                     <div className="hidden lg:flex lg:gap-x-12">
                         {navigation.map((item) => (
-                            <a key={item.name} href={item.href} className="text-sm font-semibold leading-6 text-gray-900">
+                            <Link key={item.name} to={item.href} className="text-sm font-semibold leading-6 text-gray-900">
                                 {item.name}
-                            </a>
+                            </Link>
                         ))}
                     </div>
                     <div className="hidden lg:flex lg:flex-1 lg:justify-end">
