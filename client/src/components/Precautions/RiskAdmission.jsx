@@ -102,7 +102,7 @@ export default function RiskAdmission() {
     const sampleMedicalDetails = {
         age: "[50-60)",
         race: 'Caucasian',
-       
+
         time_in_hospital: 1,
         num_lab_procedures: 2,
         num_procedures: 3,

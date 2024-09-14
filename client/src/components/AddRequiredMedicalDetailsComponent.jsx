@@ -1,10 +1,10 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { CheckIcon } from '@heroicons/react/24/solid'
 import PatientDetailsForm from './PatientDetailsForm';
 import PatientMedicalDetailsForm from './PatientMedicalDetailsForm';
 import PreviewPatientInfo from './PreviewPatientInfo';
 import { useNavigate } from 'react-router-dom';
-import { Toaster, toast } from 'react-hot-toast';
+import axios from 'axios';
 
 const steps = [
     { id: '01', name: 'Patient Details', description: 'Basic patient information', href: '#', status: 'current' },
@@ -17,7 +17,6 @@ function classNames(...classes) {
 }
 
 function AddRequiredMedicalDetailsComponent() {
-    const navigate = useNavigate();
     const [currentStep, setCurrentStep] = useState(0);
     const [patientDetails, setPatientDetails] = useState({
         profilePicture: '',
@@ -26,6 +25,10 @@ function AddRequiredMedicalDetailsComponent() {
         age: '',
         weight: '',
     });
+
+    const [isLoading, setIsLoading] = useState(false);
+
+    const navigate = useNavigate();
 
     const [medicalDetails, setMedicalDetails] = useState({
         bloodSugar: 0,
@@ -52,22 +55,60 @@ function AddRequiredMedicalDetailsComponent() {
         }
     }
 
-    const handleSubmit = () => {
+    const handleSubmit = async () => {
 
-        // resolve the promise and route to patient dashboard
-        toast.promise(
-            new Promise((resolve) => {
-                setTimeout(() => {
-                    navigate("/patient-dashboard");
-                    resolve(0);
-                }, 2000);
-            }),
-            {
-                loading: 'Adding medical details...',
-                success: 'Medical details added successfully',
-                error: 'Failed to add medical details',
+        try {
+            let age = patientDetails.age;
+            if (age < 10) {
+                age = '[0-10)';
+            } else if (age < 20) {
+                age = '[10-20)';
+            } else if (age < 30) {
+                age = '[20-30)';
+            } else if (age < 40) {
+                age = '[30-40)';
+            } else if (age < 50) {
+                age = '[40-50)';
+            } else if (age < 60) {
+                age = '[50-60)';
+            } else if (age < 70) {
+                age = '[60-70)';
+            } else if (age < 80) {
+                age = '[70-80)';
+            } else if (age < 90) {
+                age = '[80-90)';
+            } else {
+                age = '[90-100)';
             }
-        );
+            const newPatientDetails = {
+                race: patientDetails.race,
+                gender: patientDetails.gender,
+                age: age,
+                weight: patientDetails.weight,
+            }
+            setIsLoading(true);
+            await axios.post(import.meta.env.VITE_SERVER_URL + '/api/v1/patient/add-details', newPatientDetails, {
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                withCredentials: true
+            });
+            // const data = await response.data.data;
+            // console.log(data);
+
+            await axios.post(import.meta.env.VITE_SERVER_URL + '/api/v1/health-data/add', medicalDetails, {
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                withCredentials: true
+            });
+            setIsLoading(false);
+            navigate("/patient-dashboard");
+        } catch (error) {
+            console.log(error);
+            setIsLoading(false);
+            navigate("/patient-dashboard");
+        }
     }
 
     return (
@@ -201,6 +242,7 @@ function AddRequiredMedicalDetailsComponent() {
                         patientDetails={patientDetails}
                         medicalDetails={medicalDetails}
                         handleSubmit={handleSubmit}
+                        isLoading={isLoading}
                     />
                 )}
             </div>

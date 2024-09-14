@@ -1,6 +1,7 @@
 /* eslint-disable react/prop-types */
+import { LuLoader2 } from "react-icons/lu";
 
-function PreviewPatientInfo({ handlePrev, patientDetails, medicalDetails, handleSubmit }) {
+function PreviewPatientInfo({ handlePrev, patientDetails, medicalDetails, handleSubmit, isLoading }) {
     return (
         <div className="bg-white shadow overflow-hidden sm:rounded-lg">
             <div className="px-4 py-5 sm:px-6">
@@ -86,7 +87,7 @@ function PreviewPatientInfo({ handlePrev, patientDetails, medicalDetails, handle
                     </div>
                 </dl>
             </div>
-            <div className="px-4 py-3 bg-gray-50 text-right sm:px-6">
+            <div className="px-4 py-3 flex justify-between items-center bg-gray-50 text-right sm:px-6">
                 <button
                     type="button"
                     onClick={handlePrev}
@@ -99,7 +100,7 @@ function PreviewPatientInfo({ handlePrev, patientDetails, medicalDetails, handle
                     onClick={handleSubmit}
                     className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
                 >
-                    Submit Details
+                    {isLoading ? <div className="flex items-center gap-2"><LuLoader2 className="animate-spin w-5 h-5" /> <span>Submiting</span> </div> : "Submit Details"}
                 </button>
             </div>
         </div>

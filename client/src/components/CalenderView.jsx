@@ -351,13 +351,13 @@ export default function CalenderView() {
                     day.isSelected && "text-white",
                     !day.isSelected && day.isToday && "text-indigo-600",
                     !day.isSelected &&
-                      day.isCurrentMonth &&
-                      !day.isToday &&
-                      "text-gray-900",
+                    day.isCurrentMonth &&
+                    !day.isToday &&
+                    "text-gray-900",
                     !day.isSelected &&
-                      !day.isCurrentMonth &&
-                      !day.isToday &&
-                      "text-gray-500",
+                    !day.isCurrentMonth &&
+                    !day.isToday &&
+                    "text-gray-500",
                     "flex h-14 flex-col px-3 py-2 hover:bg-gray-100 focus:z-10"
                   )}
                 >
@@ -365,7 +365,7 @@ export default function CalenderView() {
                     dateTime={day.date}
                     className={classNames(
                       day.isSelected &&
-                        "flex h-6 w-6 items-center justify-center rounded-full",
+                      "flex h-6 w-6 items-center justify-center rounded-full",
                       day.isSelected && day.isToday && "bg-indigo-600",
                       day.isSelected && !day.isToday && "bg-gray-900",
                       "ml-auto"
