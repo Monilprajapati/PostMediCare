@@ -4,7 +4,7 @@ import Navbar from "./Navbar";
 const Resources = () => {
   return (
     <>
-      <Navbar />
+      {/* <Navbar /> */}
       <div className="bg-gray-50 py-16">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           {/* Heading */}
