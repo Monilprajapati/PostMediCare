@@ -12,7 +12,6 @@ import {
 import {
   Bars3Icon,
   BellIcon,
-
   CalendarIcon,
   ChatBubbleLeftRightIcon,
   HomeIcon,
@@ -61,6 +60,12 @@ const navigation = [
     name: "Resources",
     href: "/patient-dashboard/resources",
     icon: BookOpenIcon,
+    current: false,
+  },
+  {
+    name: "Doctors",
+    href: "/patient-dashboard/doctors",
+    icon: UsersIcon,
     current: false,
   },
 ];

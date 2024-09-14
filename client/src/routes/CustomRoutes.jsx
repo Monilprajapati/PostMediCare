@@ -25,6 +25,9 @@ import Resources from "../components/Resources";
 import CalenderView from "../components/CalenderView";
 import Notification from "../components/Notification";
 import PatientDashboardComponent from "../components/PatientDashboardComponent";
+import Doctors from "../components/Doctors";
+import DoctorAppointment from "../components/DoctorAppointment";
+import DoctorDashboardComponent from "../components/DoctorDashboardComponent";
 
 const CustomRoutes = () => {
   const { userRole } = useUserContext();
@@ -106,8 +109,11 @@ const CustomRoutes = () => {
         {/* <Route path="appointments" element={<Appointments />} /> */}
         <Route path="calendar" element={<CalenderView />} />
         <Route path="notification" element={<Notification />} />
+        <Route path="doctors" element={<Doctors />} />
+        <Route path="doctors/:doctorId" element={<DoctorAppointment />} />
         <Route path="contactus" element={<ContactUs />} />
         <Route path="resources" element={<Resources />} />
+
         <Route path="*" element={<NotFound404 />} />
       </Route>
 
@@ -115,18 +121,11 @@ const CustomRoutes = () => {
         path="/doctor-dashboard"
         element={
           <ProtectedRoute role={roleOptions[1].value}>
-            <DoctorDashboard />
+            <DoctorDashboardComponent/>
           </ProtectedRoute>
         }
       >
-        <Route
-          index
-          element={
-            <div className="w-full flex justify-center items-center">
-              Doctor Dashboard
-            </div>
-          }
-        />
+        <Route index element={<DoctorDashboard />} />
         <Route path="patients" element={<MyPatients />} />
         <Route path="appointment" element={<DoctorAppointments />} />
         <Route path="my-resources" element={<MyResources />} />
