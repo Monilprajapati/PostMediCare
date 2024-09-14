@@ -20,7 +20,7 @@ diabetesMed_dict = {'No': 0, 'Yes': 1}
 medicines_dict = {'No': 1, 'Up': 3, 'Steady': 2, 'Down': 0}
 
 @app.route('/predict', methods=['POST'])
-def predict_readmission():
+def predict():
     # Parse JSON data from the request
     data = request.get_json()
 
