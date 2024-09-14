@@ -4,7 +4,7 @@ import numpy as np
 from src.AIDRP.pipeline.prediction import PredictionPipeline
 
 app = Flask(__name__)
-CORS(app, resources={r"/predict": {"origins": "http://localhost:3000"}})
+CORS(app, supports_credentials=True, resources={r"/predict": {"origins": "http://localhost:3000"}})
 
 # Mapping dictionaries
 age_dict = {'[0-10)': 1, '[10-20)': 2, '[20-30)': 3, '[30-40)': 4, '[40-50)': 5, '[50-60)': 6, '[60-70)': 7, '[70-80)': 8, '[80-90)': 9, '[90-100)': 10}
@@ -24,6 +24,9 @@ def predict():
     # Parse JSON data from the request
     # data = request.get_json()
     data = request.json
+  
+
+
 
     # Map the input data using the dictionaries
     input_data = [
@@ -65,4 +68,4 @@ def predict():
     return jsonify(response)
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host='0.0.0.0', port=8000, debug=True)
