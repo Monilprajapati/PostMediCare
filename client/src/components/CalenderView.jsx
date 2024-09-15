@@ -16,114 +16,138 @@ import {
 } from "@heroicons/react/20/solid";
 import { useState } from "react";
 
-const days = [
-  { date: "2021-12-27", events: [] },
-  { date: "2021-12-28", events: [] },
-  { date: "2021-12-29", events: [] },
-  { date: "2021-12-30", events: [] },
-  { date: "2021-12-31", events: [] },
-  { date: "2022-01-01", isCurrentMonth: true, events: [] },
-  { date: "2022-01-02", isCurrentMonth: true, events: [] },
-  {
-    date: "2022-01-03",
-    isCurrentMonth: true,
-    events: [{
-      id: 1,
-      name: "Event 1",
-      time: "10:00",
-      datetime: "2022-01-03T10:00",
-      href: "#",
-    }],
-  },
-  { date: "2022-01-04", isCurrentMonth: true, events: [] },
-  { date: "2022-01-05", isCurrentMonth: true, events: [] },
-  { date: "2022-01-06", isCurrentMonth: true, events: [] },
-  {
-    date: "2022-01-07",
-    isCurrentMonth: true,
-    events: [{
-      id: 2,
-      name: "Event 2",
-      time: "11:00",
-      datetime: "2022-01-07T11:00",
-      href: "#",
-    }],
-  },
-  { date: "2022-01-08", isCurrentMonth: true, events: [] },
-  { date: "2022-01-09", isCurrentMonth: true, events: [] },
-  { date: "2022-01-10", isCurrentMonth: true, events: [] },
-  { date: "2022-01-11", isCurrentMonth: true, events: [] },
-  {
-    date: "2022-01-12",
-    isCurrentMonth: true,
-    isToday: true,
-    events: [{
-      id: 3,
-      name: "Event 3",
-      time: "12:00",
-      datetime: "2022-01-12T12:00",
-      href: "#",
-    }],
-  },
-  { date: "2022-01-13", isCurrentMonth: true, events: [] },
-  { date: "2022-01-14", isCurrentMonth: true, events: [] },
-  { date: "2022-01-15", isCurrentMonth: true, events: [] },
-  { date: "2022-01-16", isCurrentMonth: true, events: [] },
-  { date: "2022-01-17", isCurrentMonth: true, events: [] },
-  { date: "2022-01-18", isCurrentMonth: true, events: [] },
-  { date: "2022-01-19", isCurrentMonth: true, events: [] },
-  { date: "2022-01-20", isCurrentMonth: true, events: [] },
-  { date: "2022-01-21", isCurrentMonth: true, events: [] },
-  {
-    date: "2022-01-22",
-    isCurrentMonth: true,
-    isSelected: true,
-    events: [{
-      id: 4,
-      name: "Event 4",
-      time: "13:00",
-      datetime: "2022-01-22T13:00",
-      href: "#",
-    }],
-  },
-  { date: "2022-01-23", isCurrentMonth: true, events: [] },
-  { date: "2022-01-24", isCurrentMonth: true, events: [] },
-  { date: "2022-01-25", isCurrentMonth: true, events: [] },
-  { date: "2022-01-26", isCurrentMonth: true, events: [] },
-  { date: "2022-01-27", isCurrentMonth: true, events: [] },
-  { date: "2022-01-28", isCurrentMonth: true, events: [] },
-  { date: "2022-01-29", isCurrentMonth: true, events: [] },
-  { date: "2022-01-30", isCurrentMonth: true, events: [] },
-  { date: "2022-01-31", isCurrentMonth: true, events: [] },
-  { date: "2022-02-01", events: [] },
-  { date: "2022-02-02", events: [] },
-  { date: "2022-02-03", events: [] },
-  {
-    date: "2022-02-04",
-    events: [],
-  },
-  { date: "2022-02-05", events: [] },
-  { date: "2022-02-06", events: [] },
-];
-const selectedDay = days.find((day) => day.isSelected);
+
+
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-export const addEventToCalendar = (eventDetails) => {
-  const selectedDate = days.find((day) => day.isSelected);
-  selectedDate.events.push({
-    id: Math.random(),
-    name: eventDetails.medicineName,
-    time: eventDetails.time,
-    datetime: `${eventDetails.date}T${eventDetails.time}`,
-    href: "#",
-  });
-};
+
 
 export default function CalenderView() {
   const [open, setOpen] = useState(false);
+
+  const [days, setDays] = useState([
+    { date: "2021-12-27", events: [] },
+    { date: "2021-12-28", events: [] },
+    { date: "2021-12-29", events: [] },
+    { date: "2021-12-30", events: [] },
+    { date: "2021-12-31", events: [] },
+    { date: "2022-01-01", isCurrentMonth: true, events: [] },
+    { date: "2022-01-02", isCurrentMonth: true, events: [] },
+    {
+      date: "2022-01-03",
+      isCurrentMonth: true,
+      events: [{
+        id: 1,
+        name: "Paracetamol",
+        time: "10:00",
+        datetime: "2022-01-03T10:00",
+        href: "#",
+      }],
+    },
+    {
+      date: "2022-01-04", isCurrentMonth: true, events: [{
+        id: 2,
+        name: "Amoxicillin",
+        time: "10:00",
+        datetime: "2022-01-03T10:00",
+        href: "#",
+      }]
+    },
+    {
+      date: "2022-01-05", isCurrentMonth: true, events: [
+        {
+          id: 3,
+          name: "Ibuprofen",
+          time: "10:00",
+          datetime: "2022-01-03T10:00",
+          href: "#",
+        }
+      ]
+    },
+    {
+      date: "2022-01-06", isCurrentMonth: true, events: [{
+        date: "2022-01-04", isCurrentMonth: true, events: [{
+          id: 4,
+          name: "Amoxicillin",
+          time: "10:00",
+          datetime: "2022-01-03T10:00",
+          href: "#",
+        }]
+      },]
+    },
+    {
+      date: "2022-01-07",
+      isCurrentMonth: true,
+      events: [{
+        date: "2022-01-04", isCurrentMonth: true, events: [{
+          id: 5,
+          name: "Amoxicillin",
+          time: "10:00",
+          datetime: "2022-01-03T10:00",
+          href: "#",
+        }]
+      },],
+    },
+    { date: "2022-01-08", isCurrentMonth: true, events: [] },
+    { date: "2022-01-09", isCurrentMonth: true, events: [] },
+    { date: "2022-01-10", isCurrentMonth: true, events: [] },
+    { date: "2022-01-11", isCurrentMonth: true, events: [] },
+    {
+      date: "2022-01-12",
+      isCurrentMonth: true,
+      isToday: true,
+      events: [],
+    },
+    { date: "2022-01-13", isCurrentMonth: true, events: [] },
+    { date: "2022-01-14", isCurrentMonth: true, events: [] },
+    { date: "2022-01-15", isCurrentMonth: true, events: [] },
+    { date: "2022-01-16", isCurrentMonth: true, events: [] },
+    { date: "2022-01-17", isCurrentMonth: true, events: [] },
+    { date: "2022-01-18", isCurrentMonth: true, events: [] },
+    { date: "2022-01-19", isCurrentMonth: true, events: [] },
+    { date: "2022-01-20", isCurrentMonth: true, events: [] },
+    { date: "2022-01-21", isCurrentMonth: true, events: [] },
+    {
+      date: "2022-01-22",
+      isCurrentMonth: true,
+      isSelected: true,
+      events: [],
+    },
+    { date: "2022-01-23", isCurrentMonth: true, events: [] },
+    { date: "2022-01-24", isCurrentMonth: true, events: [] },
+    { date: "2022-01-25", isCurrentMonth: true, events: [] },
+    { date: "2022-01-26", isCurrentMonth: true, events: [] },
+    { date: "2022-01-27", isCurrentMonth: true, events: [] },
+    { date: "2022-01-28", isCurrentMonth: true, events: [] },
+    { date: "2022-01-29", isCurrentMonth: true, events: [] },
+    { date: "2022-01-30", isCurrentMonth: true, events: [] },
+    { date: "2022-01-31", isCurrentMonth: true, events: [] },
+    { date: "2022-02-01", events: [] },
+    { date: "2022-02-02", events: [] },
+    { date: "2022-02-03", events: [] },
+    {
+      date: "2022-02-04",
+      events: [],
+    },
+    { date: "2022-02-05", events: [] },
+    { date: "2022-02-06", events: [] },
+  ])
+
+  const selectedDay = days.find((day) => day.isSelected);
+
+  const addEventToCalendar = (eventDetails) => {
+    const selectedDate = days.find((day) => day.isSelected);
+    selectedDate.events.push({
+      id: Math.random(),
+      name: eventDetails.medicineName,
+      time: eventDetails.time,
+      datetime: `${eventDetails.date}T${eventDetails.time}`,
+      href: "#",
+    });
+  };
 
   return (
     <>
@@ -217,7 +241,7 @@ export default function CalenderView() {
                 type="button"
                 className="ml-6 rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
               >
-                Add event
+                Add medicine
               </button>
             </div>
             <Menu as="div" className="relative ml-6 md:hidden">
