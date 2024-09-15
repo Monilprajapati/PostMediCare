@@ -13,7 +13,7 @@ const ContactUs = () => {
     { name: "Health AI", href: "#" },
     {
       name: "Predection",
-      href: "#",
+      href: "https://aidrp-aidrivendiabetesreadmissionprevention-ftsahsgrwvzzdw2vb9.streamlit.app/",
     },
   ];
 

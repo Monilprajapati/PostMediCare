@@ -67,7 +67,18 @@ const navigation = [
     href: "/patient-dashboard/doctors",
     icon: UsersIcon,
     current: false,
+  },{
+    name: "HealthAI",
+    href: "/patient-dashboard/healthai",
+    icon: UsersIcon,
+    current: false,
   },
+  {
+    name: "Prediction",
+    href: "https://aidrp-aidrivendiabetesreadmissionprevention-ftsahsgrwvzzdw2vb9.streamlit.app/",
+    icon: UsersIcon,
+    current: false,
+  }
 ];
 
 const userNavigation = [
@@ -164,6 +175,13 @@ export default function UserLayout({ children }) {
                             </Link>
                           </li>
                         ))}
+                        <a
+                          target="_blank"
+                          className="text-sm font-semibold leading-6 text-gray-900"
+                          href="https://aidrp-aidrivendiabetesreadmissionprevention-ftsahsgrwvzzdw2vb9.streamlit.app/"
+                        >
+                          Prediction
+                        </a>
                       </ul>
                     </li>
                     {/* <li>
