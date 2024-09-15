@@ -97,7 +97,7 @@ function PatientDashboardComponent({ isDoctor = false }) {
             labels: data.map(entry => new Date(entry.createdAt).toLocaleDateString()),
             datasets: [{
                 label: 'Systolic Blood Pressure',
-                data: data.map(entry => entry[key].systolic),
+                data: data.map(entry => entry[key] ? entry[key].systolic : null), // Check if bloodPressure exists, otherwise return null
                 backgroundColor: 'rgba(75, 192, 192, 0.5)',
                 borderColor: 'rgba(75, 192, 192, 1)',
                 borderWidth: 1,
@@ -110,7 +110,7 @@ function PatientDashboardComponent({ isDoctor = false }) {
             labels: data.map(entry => new Date(entry.createdAt).toLocaleDateString()),
             datasets: [{
                 label: 'Diastolic Blood Pressure',
-                data: data.map(entry => entry[key].diastolic),
+                data: data.map(entry => entry[key] && entry[key].diastolic ? entry[key].diastolic : null), // Check if bloodPressure exists and diastolic is not undefined, otherwise return null
                 backgroundColor: 'rgba(75, 192, 192, 0.5)',
                 borderColor: 'rgba(75, 192, 192, 1)',
                 borderWidth: 1,
