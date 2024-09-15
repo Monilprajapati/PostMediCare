@@ -46,8 +46,10 @@ async function handleSubmitMedicalDetails(medicalDetails) {
 function PatientDashboardComponent({ isDoctor = false }) {
     const [medicalData, setMedicalData] = useState([]);
     const [open, setOpen] = useState(false);
-    const { user } = useUserContext();
+    const { user, patientDetail } = useUserContext();
     const { patientId } = useParams();
+
+    console.log(patientDetail);
     async function getMedicalDetails() {
         try {
             const response = await axios.get(import.meta.env.VITE_SERVER_URL + '/api/v1/health-data/get', {
