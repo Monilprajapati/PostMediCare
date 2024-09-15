@@ -2,63 +2,75 @@ import { ApiError } from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { Advice } from "../models/adviseModel.js";
+import { Patient } from "../models/patientModel.js";
+import { Doctor } from "../models/doctorModel.js";
 
-// Add advice
-const handleAddAdvice = asyncHandler(async (req, res) => {
-    const { patient, adviceText, precautions, medications } = req.body;
+// Add message to advice
+const handleAddMessage = asyncHandler(async (req, res) => {
+    const { message, sender, patientId, doctorId } = req.body;
+    const userId = req.user.id;
 
-    if (!patient || !adviceText) {
-        throw new ApiError(400, "Patient and advice text are required");
+    if (!message || !sender) {
+        throw new ApiError(400, "Message and sender are required");
     }
 
-    const newAdvice = await Advice.create({
-        patient,
-        doctor: req.user._id,
-        adviceText,
-        precautions,
-        medications
-    });
-
-    res.status(201).json(new ApiResponse(201, newAdvice, "Advice added successfully"));
-});
-
-// Get advice
-const handleGetAdvice = asyncHandler(async (req, res) => {
-    const { patientId } = req.query;
-
-    if (!patientId) {
-        throw new ApiError(400, "Patient ID is required");
+    let query = {};
+    if (req.user.role === 'patient') {
+        if (!doctorId) {
+            throw new ApiError(400, "Doctor ID is required for patients");
+        }
+        query = { patient: userId, doctor: doctorId };
+    } else if (req.user.role === 'doctor') {
+        if (!patientId) {
+            throw new ApiError(400, "Patient ID is required for doctors");
+        }
+        query = { patient: patientId, doctor: userId };
+    } else {
+        throw new ApiError(400, "Invalid user role");
     }
 
-    const advice = await Advice.find({ patient: patientId }).populate('doctor', 'name');
+    const advice = await Advice.findOne(query);
 
-    if (!advice.length) {
-        throw new ApiError(404, "No advice found for this patient");
-    }
-
-    res.status(200).json(new ApiResponse(200, advice, "Advice retrieved successfully"));
-});
-
-// Update advice
-const handleUpdateAdvice = asyncHandler(async (req, res) => {
-    const { adviceId } = req.params;
-    const updatedDetails = req.body;
-
-    if (!adviceId) {
-        throw new ApiError(400, "Advice ID is required");
-    }
-
-    const updatedAdvice = await Advice.findByIdAndUpdate(adviceId, updatedDetails, { new: true });
-
-    if (!updatedAdvice) {
+    if (!advice) {
         throw new ApiError(404, "Advice not found");
     }
 
-    res.status(200).json(new ApiResponse(200, updatedAdvice, "Advice updated successfully"));
+    advice.advises.push({ sender, message });
+    await advice.save();
+
+    res.status(201).json(new ApiResponse(201, advice, "Message added successfully"));
+});
+
+// Get all messages for advice
+const handleGetMessages = asyncHandler(async (req, res) => {
+    const { patientId, doctorId } = req.query;
+    const userId = req.user.id;
+
+    let query = {};
+    if (req.user.role === 'patient') {
+        if (!doctorId) {
+            throw new ApiError(400, "Doctor ID is required for patients");
+        }
+        query = { patient: userId, doctor: doctorId };
+    } else if (req.user.role === 'doctor') {
+        if (!patientId) {
+            throw new ApiError(400, "Patient ID is required for doctors");
+        }
+        query = { patient: patientId, doctor: userId };
+    } else {
+        throw new ApiError(400, "Invalid user role");
+    }
+
+    const advice = await Advice.findOne(query).populate('doctor', 'name').populate('patient', 'name');
+
+    if (!advice) {
+        throw new ApiError(404, "Advice not found");
+    }
+
+    res.status(200).json(new ApiResponse(200, advice.advises, "Messages retrieved successfully"));
 });
 
 export {
-    handleAddAdvice,
-    handleGetAdvice,
-    handleUpdateAdvice
+    handleAddMessage,
+    handleGetMessages
 };
