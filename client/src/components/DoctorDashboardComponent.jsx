@@ -1,5 +1,5 @@
 import { Dialog, DialogBackdrop, DialogPanel } from "@headlessui/react";
-import React from "react";
+import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
@@ -35,6 +35,21 @@ const DoctorDashboardComponent = () => {
   const navigate = useNavigate();
 
   const [open, setOpen] = React.useState(false);
+
+  async function getDoctorPatients() {
+    try {
+      const response = await axios.get(`${import.meta.env.VITE_SERVER_URL}/api/v1/doctor/get-my-patients`);
+      console.log('response doctor\'s patients', response.data);
+      return response.data;
+    } catch (error) {
+      console.log('error', error);
+    }
+  }
+
+  useEffect(() => {
+    getDoctorPatients();
+  }, []);
+
   const handleCardClick = (id) => {
     navigate(`/doctor-dashboard/patient/${id}`);
   };
@@ -96,6 +111,7 @@ export function DialogBox({ open, setOpen }) {
 
   const handleSubmit = async () => {
     await addPatientToDoctorByEmail(email);
+
     setOpen(false);
   };
 
