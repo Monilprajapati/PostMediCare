@@ -12,18 +12,23 @@ const adviceSchema = new Schema({
         ref: 'Doctor',  // References the Doctor model
         required: true
     },
-    adviceText: {
-        type: String,
-        required: true  // Doctor's advice or recommendations
-    },
-    precautions: {
-        type: [String],  // Array of precautions or recommendations
-        default: []
-    },
-    medications: {
-        type: [String],  // Medications prescribed or updated during the session
-        default: []
-    }
+    advises: [
+        {
+            sender: {
+                type: String,
+                enum: ['doctor', 'patient'],
+                required: true
+            },
+            message: {
+                type: String,
+                required: true
+            },
+            createdAt: {
+                type: Date,
+                default: Date.now
+            }
+        }
+    ]
 }, {
     timestamps: true
 });
