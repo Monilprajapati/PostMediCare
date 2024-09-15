@@ -1,6 +1,7 @@
 import { Dialog, DialogBackdrop, DialogPanel } from "@headlessui/react";
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const patientData = [
   {
@@ -88,8 +89,13 @@ export function DialogBox({ open, setOpen }) {
     setEmail(e.target.value);
   };
 
-  const handleSubmit = () => {
-    console.log(email);
+  async function addPatientToDoctorByEmail(email) {
+    const response = await axios.post(`${import.meta.env.VITE_SERVER_URL}/api/v1/add-patient-by-email`, { patientEmail: email });
+    return response.data;
+  }
+
+  const handleSubmit = async () => {
+    await addPatientToDoctorByEmail(email);
     setOpen(false);
   };
 
