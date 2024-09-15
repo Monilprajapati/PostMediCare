@@ -5,6 +5,8 @@ import { uploadOnCloudinary } from "../utils/cloudinary.js";
 import { Doctor } from "../models/doctorModel.js";
 import { Patient } from "../models/patientModel.js";
 import { sendRegistrationMail } from "../utils/sendRegistrationMailer.js"; // Import the new mailer function
+import { User } from "../models/userModel.js";
+import { HealthData } from "../models/healthDataModel.js";
 
 const handleAddDoctorDetails = asyncHandler(async (req, res) => {
     const { phoneNumber, specialization, medicalLicenseNumber, yearsOfExperience, qualifications, affiliatedHospitals, clinicAddress, consultationHours, biography, languagesSpoken, consultationFees, telemedicineAvailability, status, socialMediaLinks, specialAchievements, memberships, emergencyContact, patientEmails } = req.body;
@@ -125,11 +127,32 @@ const handleAddPatientByEmail = asyncHandler(async (req, res) => {
     return res.status(200).json(new ApiResponse(200, {}, "Patient email added and registration email sent successfully"));
 });
 
+const getMyPatients = asyncHandler(async (req, res) => {
+    const doctor = await Doctor.findOne({ userId: req.user._id });
+    if (!doctor) {
+        throw new ApiError(404, "Doctor not found");
+    }
+
+    const patientEmails = doctor.patientEmails;
+    const patients = await User.find({ email: { $in: patientEmails } }).select("-password");
+
+    const patientsWithHealthData = await Promise.all(patients.map(async (patient) => {
+        const healthData = await HealthData.findOne({ patientId: patient._id });
+        return {
+            ...patient.toObject(),
+            healthData: healthData ? healthData.entries : []
+        };
+    }));
+
+    return res.status(200).json(new ApiResponse(200, patientsWithHealthData, "Patients retrieved successfully"));
+});
+
 export {
     handleAddDoctorDetails,
     handleGetDoctorDetails,
     handleUpdateDoctorDetails,
-    handleAddPatientByEmail // Export the new function
+    handleAddPatientByEmail,
+    getMyPatients // Export the new function
 };
 
 
