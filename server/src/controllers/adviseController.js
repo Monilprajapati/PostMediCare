@@ -7,20 +7,21 @@ import { Doctor } from "../models/doctorModel.js";
 
 // Add message to advice
 const handleAddMessage = asyncHandler(async (req, res) => {
-    const { message, sender, patientId, doctorId } = req.body;
+    const { message, patientId, doctorId } = req.body;
     const userId = req.user.id;
+    const sender = req.user.role;
 
-    if (!message || !sender) {
-        throw new ApiError(400, "Message and sender are required");
+    if (!message) {
+        throw new ApiError(400, "Message is required");
     }
 
     let query = {};
-    if (req.user.role === 'patient') {
+    if (sender === 'patient') {
         if (!doctorId) {
             throw new ApiError(400, "Doctor ID is required for patients");
         }
         query = { patient: userId, doctor: doctorId };
-    } else if (req.user.role === 'doctor') {
+    } else if (sender === 'doctor') {
         if (!patientId) {
             throw new ApiError(400, "Patient ID is required for doctors");
         }
@@ -29,10 +30,10 @@ const handleAddMessage = asyncHandler(async (req, res) => {
         throw new ApiError(400, "Invalid user role");
     }
 
-    const advice = await Advice.findOne(query);
+    let advice = await Advice.findOne(query);
 
     if (!advice) {
-        throw new ApiError(404, "Advice not found");
+        advice = new Advice(query);
     }
 
     advice.advises.push({ sender, message });
@@ -43,7 +44,7 @@ const handleAddMessage = asyncHandler(async (req, res) => {
 
 // Get all messages for advice
 const handleGetMessages = asyncHandler(async (req, res) => {
-    const { patientId, doctorId } = req.query;
+    const { patientId, doctorId } = req.body;
     const userId = req.user.id;
 
     let query = {};
