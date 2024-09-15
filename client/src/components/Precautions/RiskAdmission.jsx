@@ -13,30 +13,53 @@ const model = genAI.getGenerativeModel({
 
 async function checkRisk(medicalDetails) {
     const prompt = `
-        Analyze the following medical details and determine if the patient has a high risk of re-admission for diabetes:
-        ${JSON.stringify(medicalDetails)}
-        
-        Return a JSON object with the following structure:
-        {
+            The patient's medical details have been analyzed, and the predictive model has identified them as being at high risk of re-admission due to diabetes complications. Immediate and effective communication is crucial to ensure the patient takes necessary precautions and seeks appropriate medical advice.
+            The color of the risk level is as follows (Please return the color in hex format):
+            - Green: Low risk
+            - Yellow: Medium risk
+            - Red: High risk
+            Values : ${JSON.stringify(medicalDetails)}
+            You need to return a JSON object with the following structure:
+            {
+            "risk_level": "",
             "message": "",
-            "advice": [
+            "precautions": [
                 {
                     "title": "",
-                    "description": ""
+                    "description": "",
+                    "frequency": "",
+                    "tools": "",
+                    "color": ""
                 },
                 {
                     "title": "",
-                    "description": ""
+                    "description": "",
+                    "note": "",
+                    "color": ""
                 },
                 {
                     "title": "",
-                    "description": ""
+                    "description": "",
+                    "diet_tips": "",
+                    "exercise_recommendation": "",
+                    "color": ""
+                },
+                {
+                    "title": "",
+                    "description": "",
+                    "urgency": "",
+                    "color": ""
+                },
+                {
+                    "title": "",
+                    "description": "",
+                    "hydration_tip": "",
+                    "rest_tip": "",
+                    "color": ""
                 }
-            ]
+            ],
+            "additional_notes": ""
         }
-
-        If risk is 0 (no risk), set message to "You are fine. No immediate medical advice needed."
-        If risk is 1 (high risk), provide a brief message about the risk and fill the advice array with relevant medical recommendations.
     `;
     const result = await model.generateContent(prompt);
     console.log(JSON.parse(result.response.text()));
@@ -67,8 +90,7 @@ export default function RiskAdmission() {
         pioglitazone: '',
         diabetesMed: '',
     });
-    const [riskResponse, setRiskResponse] = useState(null);
-    const [risk, setRisk] = useState(null);
+    const [riskResponse, setRiskResponse] = useState("");
 
     const handleMedicalDetailsChange = (e) => {
         setMedicalDetails({
@@ -107,10 +129,7 @@ export default function RiskAdmission() {
         setMedicalDetails(sampleMedicalDetails);
     }
 
-    const [isLoading, setIsLoading] = useState(false);
-
     const handleRiskResponse = async () => {
-        setIsLoading(true);
         const result = await checkRisk(medicalDetails);
         setRiskResponse(result);
 
@@ -122,18 +141,14 @@ export default function RiskAdmission() {
                 },
                 body: JSON.stringify(sampleMedicalDetails)
             })
-            const data = await response.json()
-            setRisk(data.readmit_in_30_days);
-            if (data.readmit_in_30_days == 1) {
-                setRiskResponse(data);
-            }
+            const data = await response.json();
+            // setRiskResponse(data);
             console.log(data);
         } catch (error) {
             console.log(error);
-        } finally {
-            setIsLoading(false);
         }
     }
+
 
     return (
         <div className="flex">
@@ -357,22 +372,25 @@ export default function RiskAdmission() {
             </form>
             <div className="w-full ml-4 p-4 border rounded-lg shadow-lg">
                 <h3 className="text-lg font-semibold">Risk Assessment</h3>
-                {riskResponse !== null ? (
+                {riskResponse ? (
                     <div className="text-sm text-gray-800 mt-4 p-4 border border-gray-400 rounded-lg">
-                        {risk === 0 ? (
-                            <p>You are fine. No immediate medical advice needed.</p>
-                        ) : (
-                            <>
-                                <p className="font-bold mb-2">{riskResponse.message}</p>
-                                <ul className="mt-2">
-                                    {riskResponse.advice.map((item, index) => (
-                                        <li key={index} className="mb-2">
-                                            <strong>{item.title}:</strong> {item.description}
-                                        </li>
-                                    ))}
-                                </ul>
-                            </>
-                        )}
+                        <strong>Risk Level:</strong> {riskResponse.risk_level}<br />
+                        <strong>Precautions:</strong>
+                        <ul className="mt-2">
+                            {riskResponse.precautions && riskResponse.precautions.map((precaution, index) => (
+                                <li key={index} className="p-2 my-1 rounded-md" style={{ color: precaution.color }}>
+                                    <strong>{precaution.title}</strong>: {precaution.description}
+                                    {precaution.frequency && <span className="ml-2">- Frequency: {precaution.frequency}</span>}
+                                    {precaution.tools && <span className="ml-2">- Tools: {precaution.tools}</span>}
+                                    {precaution.note && <span className="ml-2">- Note: {precaution.note}</span>}
+                                    {precaution.diet_tips && <span className="ml-2">- Diet Tips: {precaution.diet_tips}</span>}
+                                    {precaution.exercise_recommendation && <span className="ml-2">- Exercise: {precaution.exercise_recommendation}</span>}
+                                    {precaution.urgency && <span className="ml-2">- Urgency: {precaution.urgency}</span>}
+                                    {precaution.hydration_tip && <span className="ml-2">- Hydration Tips: {precaution.hydration_tip}</span>}
+                                    {precaution.rest_tip && <span className="ml-2">- Rest Tips: {precaution.rest_tip}</span>}
+                                </li>
+                            ))}
+                        </ul>
                     </div>
                 ) : (
                     <div className="text-sm text-gray-500 p-3 border border-gray-300 rounded">
@@ -383,4 +401,3 @@ export default function RiskAdmission() {
         </div>
     )
 }
-

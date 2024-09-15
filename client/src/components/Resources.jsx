@@ -10,6 +10,12 @@ const Resources = () => {
   const navigation = [
     { name: "Contact Us", href: "/contactus" },
     { name: "Resources", href: "/resources" },
+    // { name: "About", href: "/aboutus" },
+    { name: "Health AI", href: "#" },
+    {
+      name: "Predection",
+      href: "https://aidrp-aidrivendiabetesreadmissionprevention-ftsahsgrwvzzdw2vb9.streamlit.app/",
+    },
   ];
 
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -53,6 +59,9 @@ const Resources = () => {
                 {item.name}
               </Link>
             ))}
+            <a 
+            target="_blank"
+            className="text-sm font-semibold leading-6 text-gray-900" href="https://aidrp-aidrivendiabetesreadmissionprevention-ftsahsgrwvzzdw2vb9.streamlit.app/">Prediction</a>
           </div>
           <div className="hidden lg:flex lg:flex-1 lg:justify-end">
             {!user && (
