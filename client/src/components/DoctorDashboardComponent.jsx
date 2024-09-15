@@ -2,90 +2,119 @@ import { Dialog, DialogBackdrop, DialogPanel } from "@headlessui/react";
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-
-const patientData = [
-  {
-    id: 1,
-    name: "John Doe",
-    photo: "https://via.placeholder.com/150",
-    age: 25,
-  },
-  {
-    id: 2,
-    name: "Jane Smith",
-    photo: "https://via.placeholder.com/150",
-    age: 35,
-  },
-  {
-    id: 3,
-    name: "Michael Johnson",
-    photo: "https://via.placeholder.com/150",
-    age: 40,
-  },
-  {
-    id: 4,
-    name: "Sarah Brown",
-    photo: "https://via.placeholder.com/150",
-    age: 30,
-  },
-  // Add more doctor data as needed
-];
+import { FaHeartbeat, FaWeight, FaSyringe, FaRulerVertical } from 'react-icons/fa';
 
 const DoctorDashboardComponent = () => {
   const navigate = useNavigate();
 
   const [open, setOpen] = React.useState(false);
+  const [patientData, setPatientData] = React.useState([]);
+  const [loading, setLoading] = React.useState(true);
 
   async function getDoctorPatients() {
     try {
-      const response = await axios.get(`${import.meta.env.VITE_SERVER_URL}/api/v1/doctor/get-my-patients`);
-      console.log('response doctor\'s patients', response.data);
-      return response.data;
+      const response = await axios.get(`${import.meta.env.VITE_SERVER_URL}/api/v1/doctor/get-my-patients`, { withCredentials: true });
+      return response.data.data;
     } catch (error) {
       console.log('error', error);
+      setLoading(false);
+      return [];
     }
   }
 
   useEffect(() => {
-    getDoctorPatients();
+    getDoctorPatients().then((data) => {
+      console.log('data', data);
+      setPatientData(data);
+      setLoading(false);
+    });
   }, []);
 
   const handleCardClick = (id) => {
     navigate(`/doctor-dashboard/patient/${id}`);
   };
 
+  if (loading) {
+    return <div className="w-full h-screen flex items-center justify-center">
+      <div className="spinner-border animate-spin inline-block w-8 h-8 border-4 border-t-blue-500 border-b-transparent border-r-transparent border-l-transparent rounded-full" role="status">
+        <span className="visually-hidden">Loading...</span>
+      </div>
+    </div>;
+  }
+
   return (
     <>
       <DialogBox open={open} setOpen={setOpen} />
 
-      <div className="w-full h-screen p-8 bg-gray-100 px-10">
-        <div className="flex items-center justify-between py-4 px-2">
-          <h1 className="text-3xl font-bold text-gray-800 mb-6">
-            Your patients
+      <div className="bg-gray-100 p-8 rounded-2xl shadow-2xl border border-gray-300">
+        <div className="flex items-center justify-between mb-8">
+          <h1 className="text-4xl font-extrabold text-gray-900">
+            Your Patients
           </h1>
           <button
             onClick={() => setOpen(true)}
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+            className="bg-blue-600 hover:bg-blue-800 text-white font-bold py-3 px-6 rounded-lg transition duration-300 ease-in-out transform hover:scale-105 shadow-md"
           >
             Add Patient
           </button>
         </div>
-        <div className="w-full h-full flex flex-col gap-6 overflow-y-auto mt-4">
+        <div className="w-full h-full flex flex-col gap-8 overflow-y-auto">
           {patientData.map((patient) => (
             <div
-              key={patient.id}
-              className="w-full bg-white shadow-lg rounded-lg flex items-center cursor-pointer hover:shadow-xl transition-shadow"
-              onClick={() => handleCardClick(patient.id)}
+              key={patient._id}
+              className="bg-white p-8 border border-gray-200 w-full shadow-xl rounded-xl flex items-center cursor-pointer hover:shadow-2xl transition-all duration-300 ease-in-out transform hover:scale-102"
+              onClick={() => handleCardClick(patient._id)}
             >
-              <img
-                src={patient.photo}
-                alt={patient.name}
-                className="w-32 h-32 object-cover rounded-l-lg"
-              />
-              <div className="p-6 flex flex-col justify-center w-full">
-                <h2 className="text-xl font-semibold text-gray-800">
-                  {patient.name}
+              <div className="flex flex-col justify-center w-full space-y-4">
+                <h2 className="text-2xl font-bold text-gray-900">
+                  {patient.firstname} {patient.lastname}
                 </h2>
+                <p className="text-lg text-gray-700">Email: {patient.email}</p>
+                {patient.healthData && patient.healthData.length > 0 ? (
+                  <div className="bg-gray-50 p-6 rounded-xl shadow-lg border border-gray-200">
+                    <h3 className="text-xl font-semibold text-gray-800 mb-6">Health Overview</h3>
+                    <ul className="grid grid-cols-2 gap-6">
+                      <li className="text-gray-800 font-medium flex items-center space-x-3">
+                        <FaHeartbeat className="text-red-600 text-2xl" />
+                        <span>
+                          Blood Pressure:
+                          <span className={patient.healthData[patient.healthData.length - 1].bloodPressure ? "text-red-600 ml-2" : "text-gray-500 ml-2"}>
+                            {patient.healthData[patient.healthData.length - 1].bloodPressure ? `${patient.healthData[patient.healthData.length - 1].bloodPressure.systolic}/${patient.healthData[patient.healthData.length - 1].bloodPressure.diastolic} mmHg` : "N/A"}
+                          </span>
+                        </span>
+                      </li>
+                      <li className="text-gray-800 font-medium flex items-center space-x-3">
+                        <FaSyringe className="text-blue-600 text-2xl" />
+                        <span>
+                          Blood Sugar:
+                          <span className={patient.healthData[patient.healthData.length - 1].bloodSugar ? "text-blue-600 ml-2" : "text-gray-500 ml-2"}>
+                            {patient.healthData[patient.healthData.length - 1].bloodSugar || "N/A"}
+                          </span>
+                        </span>
+                      </li>
+                      <li className="text-gray-800 font-medium flex items-center space-x-3">
+                        <FaRulerVertical className="text-green-600 text-2xl" />
+                        <span>
+                          HbA1c:
+                          <span className={patient.healthData[patient.healthData.length - 1].HbA1c ? "text-green-600 ml-2" : "text-gray-500 ml-2"}>
+                            {patient.healthData[patient.healthData.length - 1].HbA1c || "N/A"}%
+                          </span>
+                        </span>
+                      </li>
+                      <li className="text-gray-800 font-medium flex items-center space-x-3">
+                        <FaWeight className="text-yellow-600 text-2xl" />
+                        <span>
+                          BMI:
+                          <span className={patient.healthData[patient.healthData.length - 1].BMI ? "text-yellow-600 ml-2" : "text-gray-500 ml-2"}>
+                            {patient.healthData[patient.healthData.length - 1].BMI || "N/A"}
+                          </span>
+                        </span>
+                      </li>
+                    </ul>
+                  </div>
+                ) : (
+                  <p className="text-lg text-gray-600 font-medium italic">Health Data: Not Available</p>
+                )}
               </div>
             </div>
           ))}
@@ -99,20 +128,36 @@ export default DoctorDashboardComponent;
 
 export function DialogBox({ open, setOpen }) {
   const [email, setEmail] = React.useState("");
+  const [loading, setLoading] = React.useState(false);
 
   const handleChange = (e) => {
     setEmail(e.target.value);
   };
 
   async function addPatientToDoctorByEmail(email) {
-    const response = await axios.post(`${import.meta.env.VITE_SERVER_URL}/api/v1/add-patient-by-email`, { patientEmail: email });
+    const response = await axios.post(
+      `${import.meta.env.VITE_SERVER_URL}/api/v1/doctor/add-patient-by-email`,
+      { patientEmail: email },
+      {
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        withCredentials: true
+      },
+    );
     return response.data;
   }
 
   const handleSubmit = async () => {
-    await addPatientToDoctorByEmail(email);
-
-    setOpen(false);
+    try {
+      setLoading(true);
+      await addPatientToDoctorByEmail(email);
+      setLoading(false);
+      setOpen(false);
+    } catch (error) {
+      console.log('error', error);
+      setLoading(false);
+    }
   };
 
   return (
@@ -155,7 +200,7 @@ export function DialogBox({ open, setOpen }) {
                 onClick={() => handleSubmit()}
                 className="inline-flex w-full justify-center rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto"
               >
-                Add
+                {loading ? "Loading..." : "Add"}
               </button>
               <button
                 type="button"
