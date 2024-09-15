@@ -1,5 +1,6 @@
 import { createContext, useContext, useState, useEffect } from "react";
 import { getUserDetails, logoutUser } from "../services/authServices.jsx";
+import axios from "axios";
 
 const UserContext = createContext();
 
@@ -11,6 +12,11 @@ export const UserContextProvider = ({ children }) => {
   const [userRole, setUserRole] = useState("");
   const [isLoading, setIsLoading] = useState(true);
   const [isDetailsAdded, setIsDetailsAdded] = useState(false);
+  const [patientDetail, setPatientDetail] = useState(null);
+  const [doctorDetail, setDoctorDetail] = useState(null);
+
+  const SERVER_DOMAIN = import.meta.env.VITE_SERVER_URL;
+  console.log(SERVER_DOMAIN);
 
   useEffect(() => {
     const fetchUserDetails = async () => {
@@ -31,15 +37,51 @@ export const UserContextProvider = ({ children }) => {
           setUser(user);
         }
         setIsLoading(false);
-
-
       } catch (error) {
         console.error("Error fetching user details:", error);
         setIsLoading(false);
       }
     };
 
+    const fetchPatientDetails = async () => {
+      try {
+        const response = await axios.get(
+          `${SERVER_DOMAIN}/api/v1/patient/get-details`,
+          {
+            withCredentials: true,
+          }
+        );
+        console.log("Response - ", response.data);
+        setPatientDetail(response.data);
+      } catch (error) {
+        console.error("Error fetching user details:", error);
+        return null;
+      }
+    };
+
+    const fetchDoctorDetails = async () => {
+      try {
+        const response = await axios.get(
+          `${SERVER_DOMAIN}/api/v1/doctor/get-details`,
+          {
+            withCredentials: true,
+          }
+        );
+        console.log("Response - ", response.data);
+        setDoctorDetail(response.data);
+      } catch (error) {
+        console.error("Error fetching user details:", error);
+        return null;
+      }
+    };
+
     fetchUserDetails();
+
+    if (userRole === "patient") {
+      fetchPatientDetails();
+    } else if (userRole === "doctor") {
+      fetchDoctorDetails();
+    }
   }, [isAuth, userId, userRole]);
 
   const logout = async () => {
@@ -47,8 +89,8 @@ export const UserContextProvider = ({ children }) => {
     setUserId("");
     setUserRole("");
     setUser(null);
-    logoutUser()
-  }
+    logoutUser();
+  };
 
   return (
     <UserContext.Provider
@@ -64,7 +106,9 @@ export const UserContextProvider = ({ children }) => {
         setUser,
         logout,
         isDetailsAdded,
-        setIsDetailsAdded
+        setIsDetailsAdded,
+        patientDetail,
+        setPatientDetail,
       }}
     >
       {children}
