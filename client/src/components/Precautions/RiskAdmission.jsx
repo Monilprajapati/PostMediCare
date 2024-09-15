@@ -381,7 +381,7 @@ export default function RiskAdmission() {
                     </div>
                 ) : riskResponse ? (
                     <div className="text-sm text-gray-800 mt-4 p-4 border border-gray-400 rounded-lg">
-                        <p className="mb-2"><strong className=" text-red-400">Risk Level:</strong> <span className="text-gray-700">{riskResponse.risk_level}</span></p>
+                        <p className="mb-2 bg-red-100 p-1 rounded-md"><strong className=" text-red-400 ">Risk Level:</strong> <span className="text-gray-700">{riskResponse.risk_level}</span></p>
                         <p className="mb-2"><strong className="text-black">Precautions:</strong></p>
                         <ul className="mt-2 space-y-2">
                             {riskResponse.precautions && riskResponse.precautions.map((precaution, index) => (
