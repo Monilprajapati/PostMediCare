@@ -130,8 +130,8 @@ export default function RiskAdmission() {
     }
 
     const handleRiskResponse = async () => {
-        const result = await checkRisk(medicalDetails);
-        setRiskResponse(result);
+        // const result = await checkRisk(medicalDetails);
+        // setRiskResponse(result);
 
         try {
             const response = await fetch('http://localhost:8000/predict', {

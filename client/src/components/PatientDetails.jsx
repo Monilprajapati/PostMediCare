@@ -16,7 +16,7 @@ export default function PatientDetails() {
       <Tabs tabs={tabs} currentTab={currentTab} setCurrentTab={setCurrentTab} />
 
       <div className="w-full flex justify-center items-center p-4">
-        {currentTab === "Patient Data" && <PatientDashboardComponent />}
+        {currentTab === "Patient Data" && <PatientDashboardComponent isDoctor={true} />}
         {currentTab === "Advice to Patient" && <DoctorsAdvice />}
       </div>
     </div>

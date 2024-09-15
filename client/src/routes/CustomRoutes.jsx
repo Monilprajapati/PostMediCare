@@ -29,6 +29,7 @@ import Doctors from "../components/Doctors";
 import DoctorAppointment from "../components/DoctorAppointment";
 import DoctorDashboardComponent from "../components/DoctorDashboardComponent";
 import PatientDetails from "../components/PatientDetails";
+import AboutUs from "../pages/AboutUs";
 
 const CustomRoutes = () => {
   const { userRole } = useUserContext();
@@ -161,6 +162,7 @@ const CustomRoutes = () => {
       />
       <Route path="/contactus" element={<ContactUs />} />
       <Route path="/resources" element={<Resources />} />
+      <Route path="/aboutus" element={<AboutUs />} />
     </Routes>
   );
 };

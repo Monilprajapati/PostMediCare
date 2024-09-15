@@ -1,41 +1,45 @@
-import React, { useState } from "react";
+import { useState, useEffect } from "react";
 
 const MyResources = () => {
-  const [resources, setResources] = useState([
-    {
-      title: "Managing Blood Sugar Levels",
-      description:
-        "Learn about key strategies to effectively manage blood sugar levels, prevent complications, and maintain a healthy lifestyle with diabetes.",
-      link: "https://example.com/managing-blood-sugar-levels",
-    },
-    {
-      title: "Diabetes-Friendly Diet Plans",
-      description:
-        "A comprehensive guide to creating diabetes-friendly meal plans to help you control your blood sugar while enjoying your food.",
-      link: "https://example.com/diabetes-friendly-diets",
-    },
-    {
-      title: "Exercise and Diabetes: The Perfect Combination",
-      description:
-        "Discover how regular exercise can significantly improve blood sugar control, reduce insulin resistance, and promote overall well-being.",
-      link: "https://example.com/exercise-and-diabetes",
-    },
-    {
-      title: "Understanding Medication for Diabetes",
-      description:
-        "Get an overview of the medications used to treat diabetes, how they work, and tips for managing your treatment effectively.",
-      link: "https://example.com/diabetes-medications",
-    },
-    {
-      title: "Managing Stress with Diabetes",
-      description:
-        "Learn how managing stress can help improve diabetes control and contribute to better mental and physical health.",
-      link: "https://example.com/managing-stress-with-diabetes",
-    },
-  ]);
+  const [resources, setResources] = useState([]);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [link, setLink] = useState("");
+
+  useEffect(() => {
+    // Fetch resources from local storage when component mounts
+    const storedResources = JSON.parse(localStorage.getItem('resources')) || [];
+
+    // If no stored resources, use dummy data
+    if (storedResources.length === 0) {
+      const dummyData = [
+        {
+          title: "Understanding Diabetes",
+          description: "A comprehensive guide to diabetes types, symptoms, and management.",
+          link: "https://www.diabetes.org/diabetes"
+        },
+        {
+          title: "Healthy Eating for Diabetics",
+          description: "Tips and recipes for maintaining a balanced diet with diabetes.",
+          link: "https://www.healthline.com/health/diabetes/diet-nutrition"
+        },
+        {
+          title: "Exercise and Diabetes",
+          description: "How physical activity can help manage blood sugar levels and improve overall health.",
+          link: "https://www.mayoclinic.org/diseases-conditions/diabetes/in-depth/diabetes-and-exercise/art-20045697"
+        }
+      ];
+      setResources(dummyData);
+      updateLocalStorage(dummyData);
+    } else {
+      setResources(storedResources);
+    }
+  }, []);
+
+  // Function to update local storage
+  const updateLocalStorage = (updatedResources) => {
+    localStorage.setItem('resources', JSON.stringify(updatedResources));
+  };
 
   // Function to handle form submission
   const handleSubmit = (e) => {
@@ -47,7 +51,11 @@ const MyResources = () => {
       description,
       link,
     };
-    setResources([...resources, newResource]);
+    const updatedResources = [...resources, newResource];
+    setResources(updatedResources);
+
+    // Update local storage
+    updateLocalStorage(updatedResources);
 
     // Clear input fields
     setTitle("");
@@ -58,10 +66,12 @@ const MyResources = () => {
   const deleteResource = (index) => {
     const updatedResources = resources.filter((_, i) => i !== index);
     setResources(updatedResources);
+    // Update local storage
+    updateLocalStorage(updatedResources);
   };
 
   return (
-    <div className="w-full min-h-screen p-8 bg-gray-100">
+    <div className="w-full min-h-screen p-8">
       <h2 className="text-3xl font-semibold mb-8 text-center">
         Add a Resource
       </h2>

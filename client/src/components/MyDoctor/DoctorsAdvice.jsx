@@ -15,7 +15,7 @@ export default function DoctorsAdvice() {
     if (inputMessage.trim() === "") return;
 
     // Update messages with user's message
-    setMessages([...messages, { sender: "User", text: inputMessage }]);
+    setMessages([...messages, { sender: "Patient", text: inputMessage }]);
     setInputMessage(""); // Clear input field after sending message
 
     // Simulate doctor response

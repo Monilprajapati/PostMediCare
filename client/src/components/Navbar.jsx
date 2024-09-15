@@ -12,6 +12,9 @@ const Navbar = () => {
   const navigation = [
     { name: "Contact Us", href: "/contactus" },
     { name: "Resources", href: "/resources" },
+    { name: "About Us", href: "/aboutus" },
+    { name: "HealthAI", href: "/healthai" },
+    { name: "Predection", href: "/predection" },
   ];
   return (
     <header className="absolute inset-x-0 top-0 z-50 bg-gray-200">

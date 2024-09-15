@@ -27,6 +27,7 @@ import axios from 'axios';
 import { Dialog, DialogBackdrop, DialogPanel } from '@headlessui/react'
 import { useEffect, useState } from 'react';
 import { useUserContext } from '../contexts/userContext';
+import { useParams } from 'react-router-dom';
 
 
 async function handleSubmitMedicalDetails(medicalDetails) {
@@ -42,11 +43,11 @@ async function handleSubmitMedicalDetails(medicalDetails) {
     }
 }
 
-function PatientDashboardComponent() {
+function PatientDashboardComponent({ isDoctor = false }) {
     const [medicalData, setMedicalData] = useState([]);
     const [open, setOpen] = useState(false);
     const { user } = useUserContext();
-
+    const { patientId } = useParams();
     async function getMedicalDetails() {
         try {
             const response = await axios.get(import.meta.env.VITE_SERVER_URL + '/api/v1/health-data/get', {
@@ -54,13 +55,14 @@ function PatientDashboardComponent() {
                     'Content-Type': 'application/json',
                 },
                 params: {
-                    patientId: user._id
+                    patientId: !isDoctor ? user._id : patientId
                 },
                 withCredentials: true
             });
             return response.data.data;
         } catch (error) {
             console.log(error);
+            return [];
         }
     }
 
@@ -75,7 +77,7 @@ function PatientDashboardComponent() {
             }
         };
         fetchData();
-    }, []);
+    }, [isDoctor, patientId]);
 
     const formatChartData = (data, key) => {
         return {
@@ -95,7 +97,7 @@ function PatientDashboardComponent() {
             labels: data.map(entry => new Date(entry.createdAt).toLocaleDateString()),
             datasets: [{
                 label: 'Systolic Blood Pressure',
-                data: data.map(entry => entry[key].systolic),
+                data: data.map(entry => entry[key] ? entry[key].systolic : null), // Check if bloodPressure exists, otherwise return null
                 backgroundColor: 'rgba(75, 192, 192, 0.5)',
                 borderColor: 'rgba(75, 192, 192, 1)',
                 borderWidth: 1,
@@ -108,7 +110,7 @@ function PatientDashboardComponent() {
             labels: data.map(entry => new Date(entry.createdAt).toLocaleDateString()),
             datasets: [{
                 label: 'Diastolic Blood Pressure',
-                data: data.map(entry => entry[key].diastolic),
+                data: data.map(entry => entry[key] && entry[key].diastolic ? entry[key].diastolic : null), // Check if bloodPressure exists and diastolic is not undefined, otherwise return null
                 backgroundColor: 'rgba(75, 192, 192, 0.5)',
                 borderColor: 'rgba(75, 192, 192, 1)',
                 borderWidth: 1,
@@ -130,7 +132,7 @@ function PatientDashboardComponent() {
     const bpDataSystolic = formatBloodPressureDataSystolic(medicalData, 'bloodPressure');
     const bpDataDiastolic = formatBloodPressureDataDiastolic(medicalData, 'bloodPressure');
     const sugarData = formatChartData(medicalData, 'bloodSugar');
-    const hba1cData = formatChartData(medicalData, 'HbA1c');
+    // const hba1cData = formatChartData(medicalData, 'HbA1c');
 
     return (
         <>
