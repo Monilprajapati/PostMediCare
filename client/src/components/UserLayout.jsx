@@ -67,7 +67,18 @@ const navigation = [
     href: "/patient-dashboard/doctors",
     icon: UsersIcon,
     current: false,
+  },{
+    name: "HealthAI",
+    href: "/patient-dashboard/healthai",
+    icon: UsersIcon,
+    current: false,
   },
+  {
+    name: "Prediction",
+    href: "https://aidrp-aidrivendiabetesreadmissionprevention-ftsahsgrwvzzdw2vb9.streamlit.app/",
+    icon: UsersIcon,
+    current: false,
+  }
 ];
 
 const userNavigation = [
