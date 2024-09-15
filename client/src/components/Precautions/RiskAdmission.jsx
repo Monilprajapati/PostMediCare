@@ -91,12 +91,15 @@ export default function RiskAdmission() {
         diabetesMed: '',
     });
     const [riskResponse, setRiskResponse] = useState("");
+    const [isLoading, setIsLoading] = useState(false);
 
     const handleMedicalDetailsChange = (e) => {
+        setIsLoading(true);
         setMedicalDetails({
             ...medicalDetails,
             [e.target.name]: e.target.value
         });
+        setIsLoading(false);
     }
 
     const sampleMedicalDetails = {
@@ -372,9 +375,13 @@ export default function RiskAdmission() {
             </form>
             <div className="w-full ml-4 p-4 border rounded-lg shadow-lg">
                 <h3 className="text-lg font-semibold">Risk Assessment</h3>
-                {riskResponse ? (
+                {isLoading ? (
+                    <div className="text-sm text-gray-500 p-3 border border-gray-300 rounded">
+                        Loading risk assessment...
+                    </div>
+                ) : riskResponse ? (
                     <div className="text-sm text-gray-800 mt-4 p-4 border border-gray-400 rounded-lg">
-                        <p className="mb-2"><strong className="text-black">Risk Level:</strong> <span className="text-gray-700">{riskResponse.risk_level}</span></p>
+                        <p className="mb-2"><strong className=" text-red-400">Risk Level:</strong> <span className="text-gray-700">{riskResponse.risk_level}</span></p>
                         <p className="mb-2"><strong className="text-black">Precautions:</strong></p>
                         <ul className="mt-2 space-y-2">
                             {riskResponse.precautions && riskResponse.precautions.map((precaution, index) => (
