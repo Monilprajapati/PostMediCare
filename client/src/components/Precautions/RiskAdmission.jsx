@@ -374,20 +374,21 @@ export default function RiskAdmission() {
                 <h3 className="text-lg font-semibold">Risk Assessment</h3>
                 {riskResponse ? (
                     <div className="text-sm text-gray-800 mt-4 p-4 border border-gray-400 rounded-lg">
-                        <strong>Risk Level:</strong> {riskResponse.risk_level}<br />
-                        <strong>Precautions:</strong>
-                        <ul className="mt-2">
+                        <p className="mb-2"><strong className="text-black">Risk Level:</strong> <span className="text-gray-700">{riskResponse.risk_level}</span></p>
+                        <p className="mb-2"><strong className="text-black">Precautions:</strong></p>
+                        <ul className="mt-2 space-y-2">
                             {riskResponse.precautions && riskResponse.precautions.map((precaution, index) => (
-                                <li key={index} className="p-2 my-1 rounded-md" style={{ color: precaution.color }}>
-                                    <strong>{precaution.title}</strong>: {precaution.description}
-                                    {precaution.frequency && <span className="ml-2">- Frequency: {precaution.frequency}</span>}
-                                    {precaution.tools && <span className="ml-2">- Tools: {precaution.tools}</span>}
-                                    {precaution.note && <span className="ml-2">- Note: {precaution.note}</span>}
-                                    {precaution.diet_tips && <span className="ml-2">- Diet Tips: {precaution.diet_tips}</span>}
-                                    {precaution.exercise_recommendation && <span className="ml-2">- Exercise: {precaution.exercise_recommendation}</span>}
-                                    {precaution.urgency && <span className="ml-2">- Urgency: {precaution.urgency}</span>}
-                                    {precaution.hydration_tip && <span className="ml-2">- Hydration Tips: {precaution.hydration_tip}</span>}
-                                    {precaution.rest_tip && <span className="ml-2">- Rest Tips: {precaution.rest_tip}</span>}
+                                <li key={index} className="p-3 bg-gray-100 rounded-md">
+                                    <h4 className="font-semibold text-black mb-1">{precaution.title}</h4>
+                                    <p className="text-gray-700">{precaution.description}</p>
+                                    {precaution.frequency && <p className="text-gray-600 mt-1">Frequency: {precaution.frequency}</p>}
+                                    {precaution.tools && <p className="text-gray-600 mt-1">Tools: {precaution.tools}</p>}
+                                    {precaution.note && <p className="text-gray-600 mt-1">Note: {precaution.note}</p>}
+                                    {precaution.diet_tips && <p className="text-gray-600 mt-1">Diet Tips: {precaution.diet_tips}</p>}
+                                    {precaution.exercise_recommendation && <p className="text-gray-600 mt-1">Exercise: {precaution.exercise_recommendation}</p>}
+                                    {precaution.urgency && <p className="text-gray-600 mt-1">Urgency: {precaution.urgency}</p>}
+                                    {precaution.hydration_tip && <p className="text-gray-600 mt-1">Hydration Tips: {precaution.hydration_tip}</p>}
+                                    {precaution.rest_tip && <p className="text-gray-600 mt-1">Rest Tips: {precaution.rest_tip}</p>}
                                 </li>
                             ))}
                         </ul>
