@@ -23,6 +23,12 @@ import { FaHouseChimneyMedical } from "react-icons/fa6";
 const navigation = [
   { name: "Contact Us", href: "/contactus" },
   { name: "Resources", href: "/resources" },
+  // { name: "About", href: "/aboutus" },
+  { name: "Health AI", href: "#" },
+  {
+    name: "Predection",
+    href: "#",
+  },
 ];
 
 const features = [
