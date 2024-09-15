@@ -102,7 +102,7 @@ export default function RiskAdmission() {
     const sampleMedicalDetails = {
         age: "[50-60)",
         race: 'Caucasian',
-       
+
         time_in_hospital: 1,
         num_lab_procedures: 2,
         num_procedures: 3,
@@ -130,8 +130,8 @@ export default function RiskAdmission() {
     }
 
     const handleRiskResponse = async () => {
-        // const result = await checkRisk(medicalDetails);
-        // setRiskResponse(result);
+        const result = await checkRisk(medicalDetails);
+        setRiskResponse(result);
 
         try {
             const response = await fetch('http://localhost:8000/predict', {

@@ -9,9 +9,9 @@ const handleAddPatientDetails = asyncHandler(async (req, res) => {
 
     const { race, gender, age, weight, timeInHospital, numLabProcedures, numProcedures, numMedications, numOutpatientVisits, numEmergencyVisits, numInpatientVisits, diagnosis1, diagnosis2, diagnosis3, numDiagnoses, maxGluSerum, A1Cresult, changeInMedication, diabetesMed, insulin, glipizide, glyburide, pioglitazone, metformin, admissionSource, admissionType, dischargeDisposition } = req.body;
 
-    if (!race || !gender || !age || !weight || !timeInHospital || !numLabProcedures || !numProcedures || !numMedications || !numOutpatientVisits || !numEmergencyVisits || !numInpatientVisits || !diagnosis1 || !diagnosis2 || !diagnosis3 || !numDiagnoses || !maxGluSerum || !A1Cresult || !changeInMedication || !diabetesMed || !insulin || !glipizide || !glyburide || !pioglitazone || !metformin || !admissionSource || !admissionType || !dischargeDisposition) {
-        throw new ApiError(400, "All fields are required in handling add details");
-    }
+    // if (!race || !gender || !age || !weight || !timeInHospital || !numLabProcedures || !numProcedures || !numMedications || !numOutpatientVisits || !numEmergencyVisits || !numInpatientVisits || !diagnosis1 || !diagnosis2 || !diagnosis3 || !numDiagnoses || !maxGluSerum || !A1Cresult || !changeInMedication || !diabetesMed || !insulin || !glipizide || !glyburide || !pioglitazone || !metformin || !admissionSource || !admissionType || !dischargeDisposition) {
+    //     throw new ApiError(400, "All fields are required in handling add details");
+    // }
 
     const isPatientDetailsExists = await Patient.findOne({ userId: req.user._id });
     if (isPatientDetailsExists) {
@@ -64,7 +64,7 @@ const handleAddPatientDetails = asyncHandler(async (req, res) => {
         admissionSource,
         admissionType,
         dischargeDisposition,
-        myDoctor: doctor ? doctor._id : "" // Add the doctor's ID here
+        myDoctor: doctor ? doctor._id : null // Add the doctor's ID here
     });
 
     res.status(201).json(new ApiResponse(201, newPatient, "Patient details added successfully"));

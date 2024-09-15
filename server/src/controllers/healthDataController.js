@@ -38,7 +38,6 @@ const handleAddHealthData = asyncHandler(async (req, res) => {
 // Get health data for a patient
 const handleGetHealthData = asyncHandler(async (req, res) => {
   const { patientId } = req.query;
-
   if (!patientId) {
     throw new ApiError(400, "Patient ID is required");
   }
