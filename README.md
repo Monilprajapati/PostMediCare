@@ -2,6 +2,8 @@
 
 PostMediCare is a comprehensive solution designed to tackle the problem of diabetes patient readmission. Utilizing advanced AI models, PostMediCare provides users with insightful analysis and a suite of features to manage their health effectively.
 
+Dorahack link : https://dorahacks.io/buidl/16282/
+
 ## Features
 
 - **Personalized Dashboard**: Track critical health metrics such as blood sugar, blood pressure, HbA1c levels, and more in an easy-to-understand visual format.
